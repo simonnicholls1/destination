@@ -1,0 +1,9 @@
+.hotel-card-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .hotel-card-list .col-4 {
+    margin: 0.5rem;
+  }
+  
