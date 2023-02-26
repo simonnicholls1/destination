@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: destination-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: destination-frontend
+  template:
+    metadata:
+      labels:
+        app: destination-frontend
+    spec:
+      containers:
+      - name: destination-frontend
+        image: <your-registry>/<your-image>:<tag>
+        ports:
+        - containerPort: 3000
+        env:
+        - name: ENV_VAR_NAME
+          value: ENV_VAR_VALUE

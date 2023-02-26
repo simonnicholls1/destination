@@ -1,5 +1,5 @@
 /destination-db/.idea/
-/frontend-app/.vscode/
-/frontend-app/node_modules/
-/backend-service/.idea/
+/frontend_app/.vscode/
+/frontend_app/node_modules/
+/backend_service/.idea/
 /.idea/
