@@ -1,6 +1,6 @@
 from sendgrid.helpers.mail import Mail
 from sendgrid import SendGridAPIClient
-from core.config import settings
+from backend_service.config import settings
 
 
 class Emailer():

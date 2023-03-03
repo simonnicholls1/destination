@@ -3,3 +3,5 @@
 /frontend_app/node_modules/
 /backend_service/.idea/
 /.idea/
+/postgres-data/
+*.env

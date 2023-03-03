@@ -1,13 +1,13 @@
 from typing import List
 from fastapi import status, HTTPException, Depends, APIRouter, Request
 from sqlalchemy.orm import Session
-from core import utils
-from core.data import models, schemas
-from core.security import oauth2, confirmation_tokens
-from core.data.database import get_db
+from backend_service.core import utils
+from backend_service.core.data import models, schemas
+from backend_service.core.security import oauth2, confirmation_tokens
+from backend_service.core.data.database import get_db
 from datetime import datetime
-from core.services.mail import Emailer
-from core.config import settings
+from backend_service.core.services.mail import Emailer
+from backend_service.config import settings
 
 router = APIRouter(
     prefix="/users",

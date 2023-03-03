@@ -1,5 +1,5 @@
 from itsdangerous import URLSafeTimedSerializer
-from backend_service.core.config import settings
+from backend_service.config import settings
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(settings.secret_key)

@@ -43,3 +43,6 @@ jobs:
         cd kubernetes
         kubectl apply -f destination-service.yaml
         kubectl apply -f destination-frontend.yaml
+
+
+

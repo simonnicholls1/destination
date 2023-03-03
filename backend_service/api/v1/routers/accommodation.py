@@ -1,10 +1,8 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from core.data import models
-from core.security import oauth2
-from core.data.database import get_db
-from core.services.hotel_search import HotelSearch
-from core.services.geolocation import GeoLocation
+from backend_service.core.data.database import get_db
+from backend_service.core.services.hotel_search import HotelSearch
+from backend_service.core.services.geolocation import GeoLocation
 
 router = APIRouter(
     prefix='/accommodation',

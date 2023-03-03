@@ -1,5 +1,5 @@
 from pydantic import BaseSettings
-
+import os
 
 class Settings(BaseSettings):
     database_hostname: str
@@ -15,8 +15,6 @@ class Settings(BaseSettings):
     email_template_id: str
     from_email: str
 
-    class Config:
-        env_file = ".env"
 
-
-settings = Settings()
+env_path = os.environ.get('ENV_FILE_PATH', '../prod.env')
+settings = Settings(_env_file=env_path, _env_file_encoding='utf-8')

@@ -1,6 +1,5 @@
 import requests
-from core.services.hotel_availability import HotelAvailability
-from core.data.models import Accommodation
+from backend_service.core.services.hotel_availability import HotelAvailability
 
 
 class HotelSearch:
