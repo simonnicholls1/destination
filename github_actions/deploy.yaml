@@ -2,10 +2,11 @@ name: Deploy to Kubernetes
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,19 +31,17 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
       run: |
-        cd destination-service
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/destination-service:${{ github.sha }} .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/destination-service:${{ github.sha }}
-        cd ../destination-frontend
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/destination-frontend:${{ github.sha }} .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/destination-frontend:${{ github.sha }}
+        docker-compose build
+        docker-compose push
 
     - name: Apply Kubernetes Configuration
       run: |
         gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
-        cd kubernetes
-        kubectl apply -f destination-service.yaml
-        kubectl apply -f destination-frontend.yaml
+        kubectl apply -f k8s/backend_deployment.yaml
+        kubectl apply -f k8s/backend_service.yaml
+        kubectl apply -f k8s/frontend_deployment.yaml
+        kubectl apply -f k8s/frontend_service.yaml
+
 
 
 

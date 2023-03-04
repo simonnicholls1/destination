@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: destination-service
-        image: <your-registry>/<your-image>:<tag>
+        image: gcr.io/my-project/destination_backend_service:latest
         ports:
         - containerPort: 8000
         env:
