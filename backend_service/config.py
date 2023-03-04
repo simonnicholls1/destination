@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     mail_api_key: str
     email_template_id: str
     from_email: str
+    cloud_sql_connection_name: str = None
 
 
 env_path = os.environ.get('ENV_FILE_PATH', '../prod.env')

@@ -21,14 +21,33 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
+    - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.3.0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
     - name: Configure Docker
       run: |
         gcloud auth configure-docker
 
-
     - name: Build and Push Docker Images
       env:
         DOCKER_BUILDKIT: 1
+        cloud_sql_connection_name: {{ secrets.CLOUD_SQL_CONNECTION_NAME }}
+        database_port: {{ secrets.DB_PORT }}
+        database_password: {{ secrets.DB_PASSWORD }}
+        database_name: {{ secrets.DB_NAME }}
+        database_username: {{ secrets.DB_USER }}
+        secret_key: {{ secrets.SECRET_KEY }}
+        algorithm: {{ secrets.ALGORITHM }}
+        mail_api_key: {{ secrets.MAIL_API_KEY }}
+        email_template_id: {{ secrets.EMAIL_TEMPLATE_ID }}
+        password_salt: {{ secrets.PASSWORD_SALT }}
+        from_email: info@destinationsurf.com
+        access_token_expire_minutes: 5
       run: |
         docker-compose build
         docker-compose push
@@ -40,7 +59,3 @@ jobs:
         kubectl apply -f k8s/backend_service.yaml
         kubectl apply -f k8s/frontend_deployment.yaml
         kubectl apply -f k8s/frontend_service.yaml
-
-
-
-
