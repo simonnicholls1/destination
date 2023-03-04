@@ -46,7 +46,7 @@ jobs:
 
       - name: Apply Kubernetes Configuration
         run: |
-          gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }}} --zone ${{ secrets.ZONE }}
+          gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }}}
           kubectl apply -f k8s/backend_deployment.yaml
           kubectl apply -f k8s/backend_service.yaml
           kubectl apply -f k8s/frontend_deployment.yaml
