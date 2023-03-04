@@ -23,20 +23,10 @@ jobs:
 
     - name: Configure Docker
       run: |
-        echo "{
-                "type": "service_account",
-                "project_id": "destination-351122",
-                "private_key_id": "2710f020a5b41e8c7f5555b4de435a098e1254a9",
-                "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQn6rsmdX5e+u/\nsOIt0MQJrcVTWpfJCPDsj0j1UTJv5QCKgI3O6U8GU3Y0+0jrRu7qsRVygBbKZmfk\ndeyylSDhAYm2xUEdar9kRBB1ONoUcn1PChJmf+UcM9Yeiqv3pFiqJg6P8UOR9jlq\n11XaT0cnCR6LuhCrJA7Axa9w5Olzu4jKrVRQ7nK7RwquZnm9dQ04sfBLlLhv+ey2\nv5OJe7RtMpwhQk7YoQ7pgCovrnwTB3RrCk4TndzrY3DLtHFjvQHo7xVQBaCPnWT2\nt6xaxVlCcZjsJ8ZfoxWzRonULGaUfj9Sb/IbXM6IpIBKpjSrdjcxbdbJXBLoXrby\nXBo/VVb1AgMBAAECggEAYa5Y7AZNi05sACmUhWop1/ROn6wbxKvUjpa6TO6zRHP/\ncFony7ku4KHkh4Mezda9GBNJHP7/bM5NF8nlRWqQ5fl/3x110w2/xnUeFZzEc211\n4bOwEOESR8W3nD5GraF8SFKgX+JRxn54vN9NWfXjtVHORRMeKdussrL85cmwyxgr\nu4TUfgkcQNYeff0W1N6IJQwfI3JmXwuGhA9lceC1vdWnGf+YaQnVFi8t3cgDcXR0\nSKzd438bi1Hl+zLDwFV/Ai84XzpifjdCwSvnXthTAY7SagU5UwcrmE8KLufS/pNe\nYmZ2h+IWn4JQZbHZvfnIn74YS6a8TAYiESOj4QY8MwKBgQDufR9NaxB+Z+XXQdqc\nbdCMcuTf6YcQSM8zbR5Y0Rlytx0+KohaZoPgaSMH8SzzU7L8Cy/kPBdH6nIJerPA\nUPK8yXxi6albUmGFoN1mg3x5hCk6yhOZYzE0EsWenZFLZTMLZ35ZaNYS95vzcbk9\nSb+ZJ6eCOiBri1HnbCNTg1SxvwKBgQDf8Svd2lps1AEekPyRTAKvBQ+/9XOveWOm\nUu2wsS7KIGhtclJm3nVpvAZAn9ulYClT/rfEAs7EViwps1k91sh9ev+6049iZWbh\nGKMAhxfNr74nheovHIS2x230tkDbDRGnuYf7jBLj2TTmmRw5XqfRCXKRuvYGp+Sc\nTmHhckO8SwKBgQC71mzrKyKIjQiobEPk5VFW7b965JHur4oS9STry3WBttwfdJyE\npy3DeMuQm9JNrGTSw3TrDLFBgVRkRvKAzMEDFKcVuPgc51vMRhFbhsBpbUCT/0lE\njK3aV9aywWQIwCJeHxuTDFFgCwoXykCeFxIDbQowNdwHGGpgHfoM8umoPQKBgQCh\noQp9LCzZoUZRjmmMYOUK90c/z+M4Qg/HKtF9FtTjc/KLE9kff+4Ua23D1N0OBlKt\n2gk+QpyDnoJvco+1j0DTOCQ87pbteKyBSGvVZKuse+xt0DyO1jF/Tn8xAR3cPBmD\nCeh4iMfVhZ6l1NpHGedbe0sinWMWuLTKj9QbiIIU8wKBgCtxvboHC6iiYvXkfaCl\n2/2k0B2X2+tMftXg0ecXh93bESjGweFAmrWvvfRCv4DP8ELe5gM8RjEyQYZm68YK\nrk9rvDGOQA5lKj8E9Nt29kVeud1HK5TwYg64g3dbTPK9mqWLsNCbGDamAEMkZ5xT\n7ywPg4oeIRKgp8LaQBQdvU1C\n-----END PRIVATE KEY-----\n",
-                "client_email": "destination-sa@destination-351122.iam.gserviceaccount.com",
-                "client_id": "109668029848226566983",
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token",
-                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/destination-sa%40destination-351122.iam.gserviceaccount.com"
-              }" | base64 --decode > ${HOME}/gcp-key.json
+        echo "${{ secrets.GCP_SA_KEY }}" > ${HOME}/gcp-key.json
         gcloud auth activate-service-account --key-file=${HOME}/gcp-key.json
         gcloud auth configure-docker
+
 
     - name: Build and Push Docker Images
       env:
