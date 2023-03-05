@@ -59,6 +59,8 @@ jobs:
           gcloud components install gke-gcloud-auth-plugin
 
       - name: Apply Kubernetes Configuration
+        env:
+          PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
         run: |
           gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --zone ${{ secrets.ZONE }}
           # Update the Kubernetes configuration files to use the new image names
