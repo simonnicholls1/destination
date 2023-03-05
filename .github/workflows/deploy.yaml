@@ -28,18 +28,19 @@ jobs:
       - name: Build Docker Images
         env:
           DOCKER_BUILDKIT: 1
-          CLOUD_SQL_CONNECTION_NAME: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
-          DB_PORT: "${{ secrets.DB_PORT }}"
-          DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
-          DB_NAME: "${{ secrets.DB_NAME }}"
-          DB_USER: "${{ secrets.DB_USER }}"
-          SECRET_KEY: "${{ secrets.SECRET_KEY }}"
-          ALGORITHM: "${{ secrets.ALGORITHM }}"
-          MAIL_API_KEY: "${{ secrets.MAIL_API_KEY }}"
-          EMAIL_TEMPLATE_ID: "${{ secrets.EMAIL_TEMPLATE_ID }}"
-          PASSWORD_SALT: "${{ secrets.PASSWORD_SALT }}"
+          cloud_sql_connection_name: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+          database_port: "${{ secrets.DB_PORT }}"
+          database_password: "${{ secrets.DB_PASSWORD }}"
+          database_name: "${{ secrets.DB_NAME }}"
+          database_username: "${{ secrets.DB_USER }}"
+          secret_key: "${{ secrets.SECRET_KEY }}"
+          algorithm: "${{ secrets.ALGORITHM }}"
+          mail_api_key: "${{ secrets.MAIL_API_KEY }}"
+          email_template_id: "${{ secrets.EMAIL_TEMPLATE_ID }}"
+          password_salt: "${{ secrets.PASSWORD_SALT }}"
+          from_email: "info@destinationsurf.com"
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
-          FROM_EMAIL: "info@destinationsurf.com"
+          KUBERNETES_SERVICE_HOST: "True"
           ACCESS_TOKEN_EXPIRE_MINUTES: 5
         run: |
           docker-compose -f docker-compose-gcp.yml build
