@@ -28,24 +28,29 @@ jobs:
       - name: Build Docker Images
         env:
           DOCKER_BUILDKIT: 1
-          cloud_sql_connection_name: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
-          database_port: "${{ secrets.DB_PORT }}"
-          database_password: "${{ secrets.DB_PASSWORD }}"
-          database_name: "${{ secrets.DB_NAME }}"
-          database_username: "${{ secrets.DB_USER }}"
-          secret_key: "${{ secrets.SECRET_KEY }}"
-          algorithm: "${{ secrets.ALGORITHM }}"
-          mail_api_key: "${{ secrets.MAIL_API_KEY }}"
-          email_template_id: "${{ secrets.EMAIL_TEMPLATE_ID }}"
-          password_salt: "${{ secrets.PASSWORD_SALT }}"
-          from_email: "info@destinationsurf.com"
-          access_token_expire_minutes: 5
+          CLOUD_SQL_CONNECTION_NAME: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+          DB_PORT: "${{ secrets.DB_PORT }}"
+          DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+          DB_NAME: "${{ secrets.DB_NAME }}"
+          DB_USER: "${{ secrets.DB_USER }}"
+          SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+          ALGORITHM: "${{ secrets.ALGORITHM }}"
+          MAIL_API_KEY: "${{ secrets.MAIL_API_KEY }}"
+          EMAIL_TEMPLATE_ID: "${{ secrets.EMAIL_TEMPLATE_ID }}"
+          PASSWORD_SALT: "${{ secrets.PASSWORD_SALT }}"
+          FROM_EMAIL: "info@destinationsurf.com"
+          ACCESS_TOKEN_EXPIRE_MINUTES: 5
         run: |
           docker-compose -f docker-compose-gcp.yml build
+          # Tag the images with the registry name and version
+          docker tag backend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
+          docker tag frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:latest
 
       - name: Docker push
         run: |
-          docker-compose -f docker-compose-gcp.yml push
+          # Push the images to GCP Container Registry
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:latest
 
       - name: Install gke-gcloud-auth-plugin
         run: |
@@ -54,6 +59,9 @@ jobs:
       - name: Apply Kubernetes Configuration
         run: |
           gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --zone ${{ secrets.ZONE }}
+          # Update the Kubernetes configuration files to use the new image names
+          sed -i 's|gcr.io/$${PROJECT_ID}/backend|gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend|g' k8s/backend_deployment.yaml
+          sed -i 's|gcr.io/$${PROJECT_ID}/frontend|gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend|g' k8s/frontend_deployment.yaml
           kubectl apply -f k8s/backend_deployment.yaml
           kubectl apply -f k8s/backend_service.yaml
           kubectl apply -f k8s/frontend_deployment.yaml
