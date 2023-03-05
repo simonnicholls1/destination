@@ -5,6 +5,7 @@ services:
     build:
       context: ./backend_service
       dockerfile: Dockerfile
+      image: backend:latest
     ports:
       - "8000:8000"
 
@@ -12,8 +13,8 @@ services:
     build:
       context: ./frontend_app
       dockerfile: Dockerfile
+      image: frontend:latest # Image tag specified here
     ports:
       - "3000:3000"
     environment:
       - BACKEND_API_URL=http://backend_service:8000
-
