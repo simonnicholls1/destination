@@ -18,5 +18,5 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: ENV_VAR_NAME
-          value: ENV_VAR_VALUE
+        - name: PROJECT_ID
+          value: "${PROJECT_ID}"

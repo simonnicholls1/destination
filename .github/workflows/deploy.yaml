@@ -63,9 +63,6 @@ jobs:
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
         run: |
           gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --zone ${{ secrets.ZONE }}
-          # Update the Kubernetes configuration files to use the new image names
-          sed -i 's|gcr.io/$${PROJECT_ID}/backend|gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend|g' k8s/backend_deployment.yaml
-          sed -i 's|gcr.io/$${PROJECT_ID}/frontend|gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend|g' k8s/frontend_deployment.yaml
           kubectl apply -f k8s/backend_deployment.yaml
           kubectl apply -f k8s/backend_service.yaml
           kubectl apply -f k8s/frontend_deployment.yaml
