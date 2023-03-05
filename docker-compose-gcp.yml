@@ -1,19 +1,19 @@
 version: '3'
 
 services:
-  backend_service:
+  backend:
     build:
       context: ./backend_service
       dockerfile: Dockerfile
-    image: gcr.io/my-project/backend:latest
+    image: gcr.io/${PROJECT_NAME}/backend:latest
     ports:
       - "8000:8000"
 
-  frontend_app:
+  frontend:
     build:
       context: ./frontend_app
       dockerfile: Dockerfile
-    image: gcr.io/my-project/frontend:latest
+    image: gcr.io/${PROJECT_NAME}/frontend:latest
     ports:
       - "3000:3000"
     environment:

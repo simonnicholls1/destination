@@ -38,6 +38,7 @@ jobs:
           MAIL_API_KEY: "${{ secrets.MAIL_API_KEY }}"
           EMAIL_TEMPLATE_ID: "${{ secrets.EMAIL_TEMPLATE_ID }}"
           PASSWORD_SALT: "${{ secrets.PASSWORD_SALT }}"
+          PROJECT_ID: "${{ {{ secrets.GCP_PROJECT_ID }}"
           FROM_EMAIL: "info@destinationsurf.com"
           ACCESS_TOKEN_EXPIRE_MINUTES: 5
         run: |
