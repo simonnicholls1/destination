@@ -43,7 +43,7 @@ jobs:
         run: |
           docker-compose -f docker-compose-gcp.yml build
 
-      -name: Docker push
+      - name: Docker push
         run: |
           docker-compose -f docker-compose-gcp.yml push
 
