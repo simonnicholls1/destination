@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: destination-service
-        image: gcr.io/${PROJECT_NAME}/backend:latest
+        image: gcr.io/${PROJECT_ID}/backend:latest
         ports:
         - containerPort: 8000

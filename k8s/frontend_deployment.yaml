@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: destination-frontend
-        image: gcr.io/${PROJECT_NAME}/frontend:latest
+        image: gcr.io/${PROJECT_ID}/frontend:latest
         ports:
         - containerPort: 3000
         env:
