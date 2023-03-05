@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend_service
       dockerfile: Dockerfile
-    image: gcr.io/${PROJECT_ID}/backend:latest
+    image: backend:latest
     ports:
       - "8000:8000"
 
@@ -13,7 +13,7 @@ services:
     build:
       context: ./frontend_app
       dockerfile: Dockerfile
-    image: gcr.io/${PROJECT_ID}/frontend:latest
+    image: frontend:latest
     ports:
       - "3000:3000"
     environment:
