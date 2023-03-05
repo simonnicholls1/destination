@@ -17,6 +17,3 @@ spec:
         image: gcr.io/${PROJECT_ID}/backend:latest
         ports:
         - containerPort: 8000
-        env:
-          - name: PROJECT_ID
-            value: "${PROJECT_ID}"
