@@ -41,7 +41,7 @@ jobs:
           from_email: "info@destinationsurf.com"
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
           KUBERNETES_SERVICE_HOST: "True"
-          ACCESS_TOKEN_EXPIRE_MINUTES: 5
+          ACCESS_TOKEN_EXPIRE_MINUTES: "5"
         run: |
           docker-compose -f docker-compose-gcp.yml build
           # Tag the images with the registry name and version
