@@ -39,6 +39,7 @@ jobs:
           email_template_id: "${{ secrets.EMAIL_TEMPLATE_ID }}"
           password_salt: "${{ secrets.PASSWORD_SALT }}"
           from_email: "info@destinationsurf.com"
+          access_token_expire_minutes: "${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}"
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
           KUBERNETES_SERVICE_HOST: "True"
         run: |

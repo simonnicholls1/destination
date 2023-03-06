@@ -15,6 +15,7 @@ ENV cloud_sql_connection_name=$cloud_sql_connection_name \
     email_template_id=$email_template_id \
     password_salt=$password_salt \
     from_email=$from_email \
+    access_token_expire_minutes=$access_token_expire_minutes \
     PROJECT_ID=$PROJECT_ID \
     KUBERNETES_SERVICE_HOST=$KUBERNETES_SERVICE_HOST
 
@@ -31,4 +32,19 @@ ENV PYTHONPATH=/app
 EXPOSE 8000
 
 # set the command to start the app
-CMD ["python", "main.py"]
+CMD ["python", "-m", "main", \
+     "--cloud-sql-connection-name", "${cloud_sql_connection_name}", \
+     "--database-port", "${database_port}", \
+     "--database-password", "${database_password}", \
+     "--database-name", "${database_name}", \
+     "--database-username", "${database_username}", \
+     "--secret-key", "${secret_key}", \
+     "--algorithm", "${algorithm}", \
+     "--mail-api-key", "${mail_api_key}", \
+     "--email-template-id", "${email_template_id}", \
+     "--password-salt", "${password_salt}", \
+     "--from-email", "${from_email}", \
+     "--access_token_expire_minutes", "${access_token_expire_minutes}", \
+     "--PROJECT-ID", "${PROJECT_ID}", \
+     "--KUBERNETES_SERVICE_HOST", "${KUBERNETES_SERVICE_HOST}" \
+    ]
