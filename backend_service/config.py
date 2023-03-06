@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     secret_key: str
     password_salt: str
     algorithm: str
-    access_token_expire_minutes: int
+    access_token_expire_minutes: str
     mail_api_key: str
     email_template_id: str
     from_email: str
