@@ -15,7 +15,6 @@ ENV cloud_sql_connection_name=$cloud_sql_connection_name \
     email_template_id=$email_template_id \
     password_salt=$password_salt \
     from_email=$from_email \
-    access_token_expire_minutes=$access_token_expire_minutes \
     PROJECT_ID=$PROJECT_ID \
     KUBERNETES_SERVICE_HOST=$KUBERNETES_SERVICE_HOST
 
@@ -44,7 +43,6 @@ CMD ["python", "-m", "main", \
      "--email-template-id", "${email_template_id}", \
      "--password-salt", "${password_salt}", \
      "--from-email", "${from_email}", \
-     "--access_token_expire_minutes", "${access_token_expire_minutes}", \
      "--PROJECT-ID", "${PROJECT_ID}", \
      "--KUBERNETES_SERVICE_HOST", "${KUBERNETES_SERVICE_HOST}" \
     ]
