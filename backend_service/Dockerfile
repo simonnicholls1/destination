@@ -15,8 +15,10 @@ ENV cloud_sql_connection_name=$cloud_sql_connection_name \
     email_template_id=$email_template_id \
     password_salt=$password_salt \
     from_email=$from_email \
-    PROJECT_ID=$PROJECT_ID \
+    project_id=$PROJECT_ID \
     KUBERNETES_SERVICE_HOST=$KUBERNETES_SERVICE_HOST
+
+RUN echo $cloud_sql_connection_name
 
 # copy the requirements file into the container and install dependencies
 COPY requirements.txt ./
