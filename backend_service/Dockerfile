@@ -19,6 +19,9 @@ ENV CLOUD_SQL_CONNECTION_NAME=$cloud_sql_connection_name \
     KUBERNETES_SERVICE_HOST=$KUBERNETES_SERVICE_HOST \
     ACCESS_TOKEN_EXPIRE_MINUTES=$access_token_expire_minutes
 
+RUN echo "TEST"
+RUN echo $ACCESS_TOKEN_EXPIRE_MINUTES
+
 # copy the requirements file into the container and install dependencies
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
