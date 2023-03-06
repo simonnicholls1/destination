@@ -20,6 +20,9 @@ class Settings(BaseSettings):
 env_path = os.environ.get('ENV_FILE_PATH', '../prod.env')
 settings = Settings(_env_file=env_path, _env_file_encoding='utf-8')
 
+for var, value in os.environ.items():
+    print(f"{var}: {value}")
+
 if not settings.cloud_sql_connection_name and not settings.database_hostname:
     raise ValueError("One of cloud_sql_connection_name or database_hostname must be provided")
 
