@@ -42,7 +42,7 @@ jobs:
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
           KUBERNETES_SERVICE_HOST: "True"
         run: |
-          docker-compose -f docker-compose-gcp.yml build
+          docker-compose -f docker-compose-gcp.yml build --no-cache
           # Tag the images with the registry name and version
           docker tag backend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/backend:latest
           docker tag frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:latest

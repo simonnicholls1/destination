@@ -5,20 +5,20 @@ services:
     build:
       context: ./backend_service
       dockerfile: Dockerfile
-      args:
-        cloud_sql_connection_name: ${cloud_sql_connection_name}
-        database_port: ${database_port}
-        database_password: ${database_password}
-        database_name: ${database_name}
-        database_username: ${database_username}
-        secret_key: ${secret_key}
-        algorithm: ${algorithm}
-        mail_api_key: ${mail_api_key}
-        email_template_id: ${email_template_id}
-        password_salt: ${password_salt}
-        from_email: ${from_email}
-        PROJECT_ID: ${PROJECT_ID}
-        KUBERNETES_SERVICE_HOST: ${KUBERNETES_SERVICE_HOST}
+    environment:
+      cloud_sql_connection_name: ${cloud_sql_connection_name}
+      database_port: ${database_port}
+      database_password: ${database_password}
+      database_name: ${database_name}
+      database_username: ${database_username}
+      secret_key: ${secret_key}
+      algorithm: ${algorithm}
+      mail_api_key: ${mail_api_key}
+      email_template_id: ${email_template_id}
+      password_salt: ${password_salt}
+      from_email: ${from_email}
+      PROJECT_ID: ${PROJECT_ID}
+      KUBERNETES_SERVICE_HOST: ${KUBERNETES_SERVICE_HOST}
     image: backend:latest
     ports:
       - "8000:8000"
