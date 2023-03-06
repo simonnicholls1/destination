@@ -17,7 +17,7 @@ ENV CLOUD_SQL_CONNECTION_NAME=$cloud_sql_connection_name \
     FROM_EMAIL=$from_email \
     PROJECT_ID=$PROJECT_ID \
     KUBERNETES_SERVICE_HOST=$KUBERNETES_SERVICE_HOST \
-    ACCESS_TOKEN_EXPIRE_MINUTES=$ACCESS_TOKEN_EXPIRE_MINUTES
+    ACCESS_TOKEN_EXPIRE_MINUTES=$access_token_expire_minutes
 
 # copy the requirements file into the container and install dependencies
 COPY requirements.txt ./

@@ -17,9 +17,9 @@ services:
         email_template_id: ${email_template_id}
         password_salt: ${password_salt}
         from_email: ${from_email}
+        access_token_expire_minutes: ${access_token_expire_minutes}
         PROJECT_ID: ${PROJECT_ID}
         KUBERNETES_SERVICE_HOST: ${KUBERNETES_SERVICE_HOST}
-        ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
     image: backend:latest
     ports:
       - "8000:8000"
