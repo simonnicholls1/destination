@@ -76,6 +76,14 @@ jobs:
         run: |
           kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
 
+      - name: Add CA certificate
+        run: |
+          mkdir -p /usr/local/share/ca-certificates/
+          curl https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy-tls-termination.yaml | \
+          openssl x509 -outform der | \
+          sudo tee /usr/local/share/ca-certificates/nginx-ingress.crt
+          sudo update-ca-certificates
+
       - name: Apply Ingress Configuration
         run: |
           kubectl apply -f k8s/destination-ingress.yaml
