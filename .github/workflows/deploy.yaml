@@ -86,4 +86,6 @@ jobs:
 
       - name: Apply Ingress Configuration
         run: |
-          kubectl apply -f k8s/destination-ingress.yaml
+          kubectl create secret tls ingress-nginx-admission --key /usr/local/share/ca-certificates/nginx-ingress.crt --cert /usr/local/share/ca-certificates/nginx-ingress.crt -n ingress-nginx
+          kubectl apply -f k8s/destination-ingress.yaml --namespace=ingress-nginx --default-ssl-certificate=ingress-nginx-admission
+
