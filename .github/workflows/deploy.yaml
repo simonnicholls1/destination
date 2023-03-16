@@ -72,11 +72,11 @@ jobs:
           kubectl rollout restart deployment destination-service
           kubectl rollout restart deployment destination-frontend
 
-      - name: Install NGINX Ingress Controller
+      - name: Install Contour Ingress Controller
         run: |
-          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
+          kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 
       - name: Apply Ingress Configuration
         run: |
-          kubectl apply -f k8s/destination-ingress.yaml --namespace=ingress-nginx
-
+          kubectl create secret tls tls-secret --key /home/user/destination-tls.key --cert /home/user/destination-tls.crt
+          kubectl apply -f k8s/destination-ingress.yaml

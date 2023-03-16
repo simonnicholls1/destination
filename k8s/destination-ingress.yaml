@@ -1,14 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: destinationsurf-ingress
+  name: destination-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: destinationsurf-ip
+    kubernetes.io/ingress.class: contour
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
+  tls:
+  - secretName: tls-secret
+    hosts:
+    - destinationsurf.com
   rules:
   - host: destinationsurf.com
     http:
       paths:
+      - path: /api/*
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              name: http
       - path: /*
         pathType: Prefix
         backend:
@@ -16,3 +29,4 @@ spec:
             name: destination-frontend
             port:
               name: http
+
