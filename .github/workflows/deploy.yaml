@@ -76,7 +76,15 @@ jobs:
         run: |
           kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 
+      - name: Create TLS Secret
+        run: |
+          echo $TLS_CERT_BASE64 | base64 --decode > tls.crt
+          echo $TLS_KEY_BASE64 | base64 --decode > tls.key
+          kubectl create secret tls tls-secret --key tls.key --cert tls.crt
+        env:
+          TLS_CERT_BASE64: ${{ secrets.TLS_CERT }}
+          TLS_KEY_BASE64: ${{ secrets.TLS_KEY }}
+
       - name: Apply Ingress Configuration
         run: |
-          kubectl create secret tls tls-secret --key /home/user/destination-tls.key --cert /home/user/destination-tls.crt
           kubectl apply -f k8s/destination-ingress.yaml
