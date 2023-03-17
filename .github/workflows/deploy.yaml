@@ -78,12 +78,12 @@ jobs:
 
       - name: Create TLS Secret
         run: |
-          echo $TLS_CERT_BASE64 | base64 --decode > destinationsurf.crt
-          echo $TLS_KEY_BASE64 | base64 --decode > destinationsurf.key
+          echo $TLS_CERT > destinationsurf.crt
+          echo $TLS_KEY > destinationsurf.key
           kubectl create secret tls tls-secret --key destinationsurf.key --cert destinationsurf.crt
         env:
-          TLS_CERT_BASE64: ${{ secrets.TLS_CERT }}
-          TLS_KEY_BASE64: ${{ secrets.TLS_KEY }}
+          TLS_CERT: ${{ secrets.TLS_CERT }}
+          TLS_KEY: ${{ secrets.TLS_KEY }}
 
       - name: Apply Ingress Configuration
         run: |
