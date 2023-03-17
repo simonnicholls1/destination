@@ -78,9 +78,9 @@ jobs:
 
       - name: Create TLS Secret
         run: |
-          echo $TLS_CERT_BASE64 | base64 --decode > tls.crt
-          echo $TLS_KEY_BASE64 | base64 --decode > tls.key
-          kubectl create secret tls tls-secret --key tls.key --cert tls.crt
+          echo $TLS_CERT_BASE64 | base64 --decode > destinationsurf.crt
+          echo $TLS_KEY_BASE64 | base64 --decode > destinationsurf.key
+          kubectl create secret tls tls-secret --key destinationsurf.key --cert destinationsurf.crt
         env:
           TLS_CERT_BASE64: ${{ secrets.TLS_CERT }}
           TLS_KEY_BASE64: ${{ secrets.TLS_KEY }}
