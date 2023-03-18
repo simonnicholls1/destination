@@ -73,17 +73,19 @@ jobs:
           kubectl rollout restart deployment destination-frontend
 
       - name: Install cert-manager
-        run: |
-          echo "Downloading cert-manager manifest..."
-          VERSION=$(curl --silent https://storage.googleapis.com/jetstack-chart-museum/latest.txt) && \
+      run: |
+          echo "Fetching the latest cert-manager release version..."
+          VERSION=$(curl --silent "https://api.github.com/repos/jetstack/cert-manager/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        
+          echo "Downloading cert-manager manifest for version ${VERSION}..."
           curl -L -o cert-manager.yaml "https://github.com/jetstack/cert-manager/releases/download/${VERSION}/cert-manager.yaml"
-
+        
           echo "Creating cert-manager namespace..."
           kubectl create namespace cert-manager
-
+        
           echo "Applying cert-manager manifest..."
           kubectl apply -f cert-manager.yaml
-
+        
           echo "Waiting for cert-manager to be ready..."
           kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager -n cert-manager
           kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager-cainjector -n cert-manager
