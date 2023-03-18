@@ -73,7 +73,7 @@ jobs:
           kubectl rollout restart deployment destination-frontend
 
       - name: Install cert-manager
-      run: |
+        run: |
           echo "Fetching the latest cert-manager release version..."
           VERSION=$(curl --silent "https://api.github.com/repos/jetstack/cert-manager/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         
