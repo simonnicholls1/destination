@@ -72,19 +72,59 @@ jobs:
           kubectl rollout restart deployment destination-service
           kubectl rollout restart deployment destination-frontend
 
-      - name: Install Contour Ingress Controller
-        run: |
-          kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+      - name: Install cert-manager
+          run: |
+            if ! kubectl get namespace cert-manager > /dev/null 2>&1; then
+            kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.crds.yaml
+            kubectl create namespace cert-manager
+            helm repo add jetstack https://charts.jetstack.io
+            helm repo update
+            helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.6.1
+            kubectl wait --for=condition=Available --timeout=300s deployment -l app.kubernetes.io/name=cert-manager -n cert-manager
+            fi
 
-      - name: Create TLS Secret
-        run: |
-          echo $TLS_CERT > destinationsurf.crt
-          echo $TLS_KEY > destinationsurf.key
-          kubectl create secret tls tls-secret --key destinationsurf.key --cert destinationsurf.crt
+      - name: Create Let's Encrypt ClusterIssuer
         env:
-          TLS_CERT: ${{ secrets.TLS_CERT }}
-          TLS_KEY: ${{ secrets.TLS_KEY }}
-
-      - name: Apply Ingress Configuration
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
         run: |
-          kubectl apply -f k8s/destination-ingress.yaml
+          if ! kubectl get clusterissuer letsencrypt > /dev/null 2>&1; then
+            cat <<EOF | kubectl apply -f -
+            apiVersion: cert-manager.io/v1
+            kind: ClusterIssuer
+            metadata:
+              name: letsencrypt
+            spec:
+              acme:
+                server: https://acme-v02.api.letsencrypt.org/directory
+                email: ${EMAIL_ADDRESS}
+                privateKeySecretRef:
+                  name: letsencrypt-account-key
+                solvers:
+                - http01:
+                    ingress:
+                      class: gce
+            EOF
+          fi
+
+      - name: Reserve static IP address
+        run: |
+          if ! gcloud compute addresses describe frontend-ip --global > /dev/null 2>&1; then
+            gcloud compute addresses create frontend-ip --global
+          fi
+
+      - name: Update ingress.yaml
+        env:
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+        run: |
+          RESERVED_IP=$(gcloud compute addresses describe frontend-ip --global --format="value(address)")
+          sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress.yaml
+
+      - name: Apply Ingress and other related resources
+        run: |
+          kubectl apply -f k8s/ingress.yaml
+
+      - name: Output reserved IP address
+        run: |
+          RESERVED_IP=$(gcloud compute addresses describe frontend-ip --global --format="value(address)")
+          echo "Frontend IP Address: $RESERVED_IP"
+
