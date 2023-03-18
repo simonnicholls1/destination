@@ -81,7 +81,7 @@ jobs:
           kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
         
           echo "Applying cert-manager manifest..."
-          kubectl apply -f cert-manager.yaml
+          kubectl apply -f cert-manager.yaml --validate=false
         
           echo "Waiting for cert-manager to be ready..."
           kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager -n cert-manager
