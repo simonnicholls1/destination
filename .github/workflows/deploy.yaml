@@ -100,15 +100,27 @@ jobs:
             gcloud compute addresses create frontend-ip --global
           fi
 
-      - name: Update ingress.yaml
+      - name: Update ingress.yaml file
         env:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
         run: |
           RESERVED_IP=$(gcloud compute addresses describe frontend-ip --global --format="value(address)")
           sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress.yaml
 
-      - name: Apply Ingress and other related resources
+      - name: Check if Let's Encrypt certificate already exists
         run: |
+          EXISTS=$(kubectl get certificate destinationsurf-tls --ignore-not-found)
+          if [ -z "$EXISTS" ]; then
+            echo "CERT_EXISTS=false" >> $GITHUB_ENV
+          else
+            echo "CERT_EXISTS=true" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy Ingress and other related resources
+        run: |
+          if [ "$CERT_EXISTS" = "false" ]; then
+            kubectl apply -f k8s/certificate.yaml
+          fi
           kubectl apply -f k8s/ingress.yaml
 
       - name: Output reserved IP address
