@@ -54,12 +54,12 @@ jobs:
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend:latest
 
       - name: Check and install gke-gcloud-auth-plugin if not installed
-          run: |
-            if ! gcloud components list --filter="gke-gcloud-auth-plugin" --format="value(state)" | grep -q "Installed"; then
-              gcloud components install gke-gcloud-auth-plugin
-            else
-              echo "gke-gcloud-auth-plugin is already installed"
-            fi
+        run: |
+          if ! gcloud components list --filter="gke-gcloud-auth-plugin" --format="value(state)" | grep -q "Installed"; then
+            gcloud components install gke-gcloud-auth-plugin
+          else
+            echo "gke-gcloud-auth-plugin is already installed"
+          fi
       - name: Replace project ID in k8s deployment
         run: |
           sed -i "s/\${PROJECT_ID}/${{ secrets.GCP_PROJECT_ID }}/g" k8s/frontend_deployment.yaml
