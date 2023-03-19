@@ -74,14 +74,11 @@ jobs:
 
       - name: Install cert-manager
         run: |
-          echo "Downloading cert-manager manifest for version 1.11..."
-          curl -L -o cert-manager.yaml "https://github.com/jetstack/cert-manager/releases/download/1.11/cert-manager.yaml"
-
           echo "Creating cert-manager namespace (if not exists)..."
           kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
         
           echo "Applying cert-manager manifest..."
-          kubectl apply -f cert-manager.yaml --validate=false
+          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
         
           echo "Waiting for cert-manager to be ready..."
           kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager -n cert-manager
