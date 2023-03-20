@@ -24,12 +24,12 @@ spec:
             port:
               number: 80
   - host: www.destinationsurf.com
-      http:
-        paths:
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: destination-frontend
-                  port:
-                    number: 80
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: destination-frontend
+            port:
+              number: 80
