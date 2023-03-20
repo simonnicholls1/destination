@@ -72,33 +72,23 @@ jobs:
           kubectl rollout restart deployment destination-service
           kubectl rollout restart deployment destination-frontend
 
-      - name: Install cert-manager
-        run: |
-          echo "Creating cert-manager namespace (if not exists)..."
-          kubectl create namespace cert-manager --dry-run=client -o yaml | kubectl apply -f -
-        
-          echo "Applying cert-manager manifest..."
-          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
-        
-          echo "Waiting for cert-manager to be ready..."
-          kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager -n cert-manager
-          kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager-cainjector -n cert-manager
-          kubectl wait --for=condition=Available --timeout=300s deployment/cert-manager-webhook -n cert-manager
-
-      - name: Create Let's Encrypt ClusterIssuer
-        env:
-          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-        run: |
-          if ! kubectl get clusterissuer letsencrypt > /dev/null 2>&1; then
-            sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/letsencrypt-clusterissuer.yaml
-            kubectl apply -f k8s/letsencrypt-clusterissuer.yaml
-          fi
-
       - name: Reserve static IP address
         run: |
           if ! gcloud compute addresses describe frontend-ip --global > /dev/null 2>&1; then
             gcloud compute addresses create frontend-ip --global
           fi
+
+      - name: Get and save tls certificate and create secret
+        env:
+          SSL_CERT: ${{ secrets.SSL_CERT }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
+        run: |
+          # Save certificate and key to file
+          echo "${SSL_CERT}" | base64 -d > cert.pem
+          echo "${SSL_KEY}" | base64 -d > key.pem
+
+          # Create Kubernetes secret
+          kubectl create secret tls destinationsurf-tls --key key.pem --cert cert.pem
 
       - name: Update ingress.yaml files
         env:
@@ -106,22 +96,9 @@ jobs:
         run: |
           RESERVED_IP=$(gcloud compute addresses describe frontend-ip --global --format="value(address)")
           sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress-tls.yaml
-          sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress.yaml
-
-      - name: Check if Let's Encrypt certificate already exists
-        run: |
-          EXISTS=$(kubectl get certificate destinationsurf-tls --ignore-not-found)
-          if [ -z "$EXISTS" ]; then
-            echo "CERT_EXISTS=false" >> $GITHUB_ENV
-          else
-            echo "CERT_EXISTS=true" >> $GITHUB_ENV
-          fi
 
       - name: Deploy Ingress and other related resources
         run: |
-          if [ "$CERT_EXISTS" = "false" ]; then
-            kubectl apply -f k8s/certificate.yaml
-          fi
           kubectl apply -f k8s/ingress-tls.yaml
 
       - name: Output reserved IP address
