@@ -95,6 +95,10 @@ jobs:
           cat key.pem.base64 >> key.pem
           echo "-----END PRIVATE KEY-----" >> key.pem
 
+          # Test the certificate and key files using OpenSSL
+          openssl x509 -noout -text -in cert.pem
+          openssl rsa -noout -text -in key.pem
+
           # Create the Kubernetes secret
           kubectl create secret tls destinationsurf-tls --key key.pem --cert cert.pem
 
