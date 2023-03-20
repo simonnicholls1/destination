@@ -4,7 +4,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from backend_service.config import settings
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 if 'KUBERNETES_SERVICE_HOST' in os.environ:
+    logger.info('Running in Kubernetes, using Cloud SQL connection string')
     # Running in Kubernetes, use Cloud SQL connection string
     SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{settings.database_username}:{settings.database_password}@/{settings.database_name}?host=/cloudsql/{settings.cloud_sql_connection_name}"
 else:
