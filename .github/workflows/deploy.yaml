@@ -100,11 +100,12 @@ jobs:
             gcloud compute addresses create frontend-ip --global
           fi
 
-      - name: Update ingress.yaml file
+      - name: Update ingress.yaml files
         env:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
         run: |
           RESERVED_IP=$(gcloud compute addresses describe frontend-ip --global --format="value(address)")
+          sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress-tls.yaml
           sed -i "s/your-email@example.com/${EMAIL_ADDRESS}/g" k8s/ingress.yaml
 
       - name: Check if Let's Encrypt certificate already exists
