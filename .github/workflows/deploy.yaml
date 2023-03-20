@@ -87,6 +87,9 @@ jobs:
           echo "${CERTIFICATE}" > cert.pem
           echo "${KEY}" > key.pem
 
+          # Check if the secret already exists and delete it if it does
+          kubectl get secret destinationsurf-tls && kubectl delete secret destinationsurf-tls
+
           # Create the Kubernetes secret
           kubectl create secret tls destinationsurf-tls --key key.pem --cert cert.pem
 
