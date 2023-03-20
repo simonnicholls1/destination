@@ -121,7 +121,7 @@ jobs:
           if [ "$CERT_EXISTS" = "false" ]; then
             kubectl apply -f k8s/certificate.yaml
           fi
-          kubectl apply -f k8s/ingress.yaml
+          kubectl apply -f k8s/ingress-tls.yaml
 
       - name: Output reserved IP address
         run: |
