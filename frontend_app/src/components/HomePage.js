@@ -24,7 +24,7 @@ const HomePage = () => {
 
       const fetchHotels = async () => {
         try {
-          const response = await fetch('http://0.0.0.0:8900/accommodation/featured?no_results=10');
+          const response = await fetch('${process.env.REACT_APP_BACKEND_SERVICE_URL}/accommodation/featured?no_results=10');
           if (!response.ok) {
             throw new Error(response.statusText);
           }
