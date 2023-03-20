@@ -80,14 +80,22 @@ jobs:
 
       - name: Get and save tls certificate and create secret
         env:
-          SSL_CERT: ${{ secrets.SSL_CERT }}
-          SSL_KEY: ${{ secrets.SSL_KEY }}
+          CERTIFICATE: ${{ secrets.SSL_CERT }}
+          KEY: ${{ secrets.SSL_KEY }}
         run: |
-          # Save certificate and key to file
-          echo "${SSL_CERT}" | base64 -d > cert.pem
-          echo "${SSL_KEY}" | base64 -d > key.pem
+          # Decode the certificate and key files from base64
+          echo "${CERTIFICATE}" | base64 -d > cert.pem.base64
+          echo "${KEY}" | base64 -d > key.pem.base64
 
-          # Create Kubernetes secret
+          # Add the appropriate headers and footers to the certificate and key files
+          echo "-----BEGIN CERTIFICATE-----" > cert.pem
+          cat cert.pem.base64 >> cert.pem
+          echo "-----END CERTIFICATE-----" >> cert.pem
+          echo "-----BEGIN PRIVATE KEY-----" > key.pem
+          cat key.pem.base64 >> key.pem
+          echo "-----END PRIVATE KEY-----" >> key.pem
+
+          # Create the Kubernetes secret
           kubectl create secret tls destinationsurf-tls --key key.pem --cert cert.pem
 
       - name: Update ingress.yaml files
