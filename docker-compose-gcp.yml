@@ -6,7 +6,7 @@ services:
       context: ./backend_service
       dockerfile: Dockerfile
       args:
-        cloud_sql_connection_name: ${cloud_sql_connection_name}
+        database_hostname: ${database_hostname}
         database_port: ${database_port}
         database_password: ${database_password}
         database_name: ${database_name}
@@ -18,7 +18,6 @@ services:
         password_salt: ${password_salt}
         from_email: ${from_email}
         PROJECT_ID: ${PROJECT_ID}
-        KUBERNETES_SERVICE_HOST: ${KUBERNETES_SERVICE_HOST}
     image: backend:latest
     ports:
       - "8000:8000"

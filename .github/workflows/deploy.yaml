@@ -29,6 +29,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           cloud_sql_connection_name: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+          database_hostname: "${{ secrets.DB_HOST }}"
           database_port: "${{ secrets.DB_PORT }}"
           database_password: "${{ secrets.DB_PASSWORD }}"
           database_name: "${{ secrets.DB_NAME }}"
@@ -40,7 +41,6 @@ jobs:
           password_salt: "${{ secrets.PASSWORD_SALT }}"
           from_email: "info@destinationsurf.com"
           PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
-          KUBERNETES_SERVICE_HOST: "True"
         run: |
           docker-compose -f docker-compose-gcp.yml build --no-cache
           # Tag the images with the registry name and version
@@ -56,6 +56,15 @@ jobs:
       - name: Install gke-gcloud-auth-plugin
         run: |
           gcloud components install gke-gcloud-auth-plugin
+
+      - name: Create Cloud SQL Secret
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          echo "Creating cloudsql-instance-credentials secret"
+          kubectl create secret generic cloudsql-instance-credentials --from-literal=credentials.json="${GCP_SA_KEY}" --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create secret generic cloudsql-connection-name --from-literal=CLOUD_SQL_CONNECTION_NAME=${{ secrets.CLOUD_SQL_CONNECTION_NAME }}
+
 
       - name: Replace project ID in k8s deployment
         run: |

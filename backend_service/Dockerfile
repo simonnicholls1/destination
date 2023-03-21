@@ -21,7 +21,7 @@ ARG password_salt
 ARG from_email
 ARG PROJECT_ID
 ARG KUBERNETES_SERVICE_HOST
-ENV cloud_sql_connection_name=${cloud_sql_connection_name} \
+ENV database_hostname=${database_hostname} \
     database_port=${database_port} \
     database_password=${database_password} \
     database_name=${database_name} \
@@ -45,7 +45,7 @@ EXPOSE 8000
 
 # set the command to start the app
 CMD ["python", "-m", "main", \
-     "--cloud-sql-connection-name", "${cloud_sql_connection_name}", \
+     "--database_hostname", "${database_hostname}", \
      "--database-port", "${database_port}", \
      "--database-password", "${database_password}", \
      "--database-name", "${database_name}", \
