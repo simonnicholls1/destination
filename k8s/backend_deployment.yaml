@@ -23,8 +23,6 @@ spec:
         args:
           - /cloud_sql_proxy -instances=$(cat /secrets/cloudsql-connection-name/CLOUD_SQL_CONNECTION_NAME)=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
             while true; do sleep 86400; done
-        securityContext:
-          runAsUser: 2
         volumeMounts:
           - name: cloudsql-instance-credentials
             mountPath: /secrets/cloudsql
