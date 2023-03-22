@@ -66,19 +66,19 @@ jobs:
 
           echo "Checking if cloudsql-instance-credentials secret already exists"
           if kubectl get secret cloudsql-instance-credentials | grep -q "cloudsql-instance-credentials"; then
-              echo "cloudsql-instance-credentials secret already exists"
-          else
-              echo "Creating cloudsql-instance-credentials secret"
-              kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=credentials.json
+              echo "cloudsql-instance-credentials secret already exists deleting to recreate"
+              kubectl delete secret cloudsql-instance-credentials
           fi
+          echo "Creating cloudsql-instance-credentials secret"
+          kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=credentials.json
 
           echo "Checking if cloudsql-connection-name secret already exists"
           if kubectl get secret cloudsql-connection-name | grep -q "cloudsql-connection-name"; then
               echo "cloudsql-connection-name secret already exists"
-          else
-              echo "Creating cloudsql-connection-name secret"
-              kubectl create secret generic cloudsql-connection-name --from-literal=CLOUD_SQL_CONNECTION_NAME="${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+              kubectl delete secret cloudsql-connection-name
           fi
+          echo "Creating cloudsql-connection-name secret"
+          kubectl create secret generic cloudsql-connection-name --from-literal=CLOUD_SQL_CONNECTION_NAME="${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
 
       - name: Replace project ID in k8s deployment
         run: |
