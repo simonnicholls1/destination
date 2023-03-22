@@ -19,10 +19,10 @@ spec:
         - containerPort: 8000
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.17
-        command: [ "/bin/sh", "-c" ]
+        command: [ "/cloud_sql_proxy" ]
         args:
-          - /cloud_sql_proxy -instances=$(cat /secrets/cloudsql-connection-name/CLOUD_SQL_CONNECTION_NAME)=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
-            while true; do sleep 86400; done
+          - -instances=$(cat /secrets/cloudsql-connection-name/CLOUD_SQL_CONNECTION_NAME)=tcp:5432
+          - -credential_file=/secrets/cloudsql/credentials.json
         volumeMounts:
           - name: cloudsql-instance-credentials
             mountPath: /secrets/cloudsql
@@ -37,5 +37,3 @@ spec:
         - name: cloudsql-connection-name
           secret:
             secretName: cloudsql-connection-name
-
-
