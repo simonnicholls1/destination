@@ -61,7 +61,7 @@ jobs:
       - name: Create Cloud SQL Secrets
         run: |
           echo "Writing GitHub secret to credentials.json file"
-          echo -e "${{ secrets.GCP_SA_KEY }}" > credentials.json
+          gcloud auth application-default print-access-token > credentials.json
           cat credentials.json
 
           echo "Checking if cloudsql-instance-credentials secret already exists"
