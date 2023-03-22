@@ -60,12 +60,15 @@ jobs:
 
       - name: Create Cloud SQL Secrets
         run: |
+          echo "Writing GitHub secret to credentials.json file"
+          echo "${{ secrets.GCP_SA_KEY }}" > credentials.json
+
           echo "Checking if cloudsql-instance-credentials secret already exists"
           if kubectl get secret cloudsql-instance-credentials | grep -q "cloudsql-instance-credentials"; then
               echo "cloudsql-instance-credentials secret already exists"
           else
               echo "Creating cloudsql-instance-credentials secret"
-              kubectl create secret generic cloudsql-instance-credentials --from-literal=credentials.json="${{ secrets.GCP_SA_KEY }}"
+              kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=credentials.json
           fi
 
           echo "Checking if cloudsql-connection-name secret already exists"
