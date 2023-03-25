@@ -21,7 +21,7 @@ spec:
         image: gcr.io/cloudsql-docker/gce-proxy:1.17
         command: [ "/cloud_sql_proxy" ]
         args:
-          - -instances=${CLOUD_SQL_CONNECTION_NAME}=tcp:5432
+          - -instances=$(CLOUD_SQL_CONNECTION_NAME)=tcp:5432
           - -credential_file=/secrets/cloudsql/credentials.json
         env:
           - name: CLOUD_SQL_CONNECTION_NAME
