@@ -11,6 +11,13 @@ spec:
   - host: destinationsurf.com
     http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: destination-service
+            port:
+              number: 80
       - path: /
         pathType: Prefix
         backend:
