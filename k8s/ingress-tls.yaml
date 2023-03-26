@@ -23,6 +23,13 @@ spec:
             name: destination-frontend
             port:
               number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: destination-service
+            port:
+              number: 80
   - host: www.destinationsurf.com
     http:
       paths:
@@ -31,5 +38,12 @@ spec:
         backend:
           service:
             name: destination-frontend
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: destination-service
             port:
               number: 80
