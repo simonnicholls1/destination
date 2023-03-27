@@ -16,13 +16,6 @@ spec:
   - host: destinationsurf.com
     http:
       paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: destination-frontend
-            port:
-              number: 80
       - path: /api/*
         pathType: ImplementationSpecific
         backend:
@@ -30,16 +23,16 @@ spec:
             name: destination-service
             port:
               number: 8080
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: destination-frontend
+            port:
+              number: 80
   - host: www.destinationsurf.com
     http:
       paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: destination-frontend
-            port:
-              number: 80
       - path: /api/*
         pathType: ImplementationSpecific
         backend:
@@ -47,3 +40,10 @@ spec:
             name: destination-service
             port:
               number: 8080
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: destination-frontend
+            port:
+              number: 80
