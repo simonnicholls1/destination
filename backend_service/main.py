@@ -5,7 +5,7 @@ from api.v1.routers import post, user, auth, accommodation
 
 # models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(root_path='/api')
+app = FastAPI()
 
 origins = ["*"]
 
