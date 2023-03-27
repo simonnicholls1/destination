@@ -5,7 +5,7 @@ from api.v1.routers import post, user, auth, accommodation
 
 # models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(root_path='/api')
 
 origins = ["*"]
 
@@ -17,10 +17,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
-app.include_router(user.router)
-app.include_router(post.router)
-app.include_router(accommodation.router)
+app.include_router(auth.router, prefix="/api")
+app.include_router(user.router, prefix="/api")
+app.include_router(post.router, prefix="/api")
+app.include_router(accommodation.router, prefix="/api")
 
 @app.get("/")
 def root():
