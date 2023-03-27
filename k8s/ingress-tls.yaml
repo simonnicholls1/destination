@@ -17,17 +17,10 @@ spec:
     http:
       paths:
       - path: /
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: destination-frontend
-            port:
-              number: 80
-      - path: /destination-api
-        pathType: Prefix
-        backend:
-          service:
-            name: destination-service
             port:
               number: 80
   - host: www.destinationsurf.com
@@ -38,12 +31,5 @@ spec:
         backend:
           service:
             name: destination-frontend
-            port:
-              number: 80
-      - path: /destination-api
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: destination-service
             port:
               number: 80
