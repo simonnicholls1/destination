@@ -17,12 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router, prefix="/api")
-app.include_router(user.router, prefix="/api")
-app.include_router(post.router, prefix="/api")
-app.include_router(accommodation.router, prefix="/api")
+app.include_router(auth.router, prefix="/destinationapi")
+app.include_router(user.router, prefix="/destinationapi")
+app.include_router(post.router, prefix="/destinationapi")
+app.include_router(accommodation.router, prefix="/destinationapi")
 
-@app.get("/")
+@app.get("/destinationapi")
 def root():
     return {"message": "Hello World"}
 

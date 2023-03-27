@@ -16,7 +16,7 @@ spec:
   - host: destinationsurf.com
     http:
       paths:
-      - path: /api/*
+      - path: /destinationapi/*
         pathType: ImplementationSpecific
         backend:
           service:
@@ -33,7 +33,7 @@ spec:
   - host: www.destinationsurf.com
     http:
       paths:
-      - path: /api/*
+      - path: /destinationapi/*
         pathType: ImplementationSpecific
         backend:
           service:
