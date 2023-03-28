@@ -22,7 +22,7 @@ app.include_router(user.router, prefix="/destinationapi")
 app.include_router(post.router, prefix="/destinationapi")
 app.include_router(accommodation.router, prefix="/destinationapi")
 
-@app.get("/destinationapi")
+@app.get("/")
 def root():
     return {"message": "Hello World"}
 
