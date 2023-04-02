@@ -9,6 +9,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 # set environment variables
 ARG cloud_sql_connection_name
+ARG database_hostname
 ARG database_port
 ARG database_password
 ARG database_name
