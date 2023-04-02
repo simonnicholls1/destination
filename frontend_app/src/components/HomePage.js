@@ -14,7 +14,7 @@ const HomePage = () => {
 
   useEffect(() => {
     // send a request to the server to get the logged-in user's information
-    fetch('api/users/info', {
+    fetch('destinationapi/users/info', {
       headers: {
         'Authorization': `Bearer ${getCookie('jwt')}`,
       },
@@ -24,7 +24,7 @@ const HomePage = () => {
 
       const fetchHotels = async () => {
         try {
-          const response = await fetch('api/accommodation/featured?no_results=10');
+          const response = await fetch('destinationapi/accommodation/featured?no_results=10');
           if (!response.ok) {
             throw new Error(response.statusText);
           }
