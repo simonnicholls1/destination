@@ -15,6 +15,5 @@ class Settings(BaseSettings):
     from_email: str
     database_hostname: str
 
-
 env_path = os.environ.get('ENV_FILE_PATH', '../prod.env')
 settings = Settings(_env_file=env_path, _env_file_encoding='utf-8')
