@@ -45,7 +45,7 @@ EXPOSE 8000
 
 # set the command to start the app
 CMD ["python", "-m", "main", \
-     "--database_hostname", "${database_hostname}", \
+     "--database-hostname", "${database_hostname}", \
      "--database-port", "${database_port}", \
      "--database-password", "${database_password}", \
      "--database-name", "${database_name}", \
