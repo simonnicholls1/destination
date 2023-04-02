@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -17,22 +19,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.middleware("http")
-async def filter_root_path(request, call_next):
-    if request.url.path == "/":
-        response = await call_next(request)
-        response.headers["X-Suppress-Logging"] = "true"
-        return response
-
-    # Call the next middleware in the chain
-    response = await call_next(request)
-
-    return response
 
 app.include_router(auth.router, prefix="/destinationapi")
 app.include_router(user.router, prefix="/destinationapi")
 app.include_router(post.router, prefix="/destinationapi")
 app.include_router(accommodation.router, prefix="/destinationapi")
+
+# Define the filter
+class EndpointFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return record.args and len(record.args) >= 3 and record.args[2] != "/"
+
+# Add filter to the logger
+logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 
 @app.get("/")
 def root():
