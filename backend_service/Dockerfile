@@ -44,18 +44,18 @@ ENV PYTHONPATH=/app
 EXPOSE 8000
 
 # set the command to start the app
-CMD ["python", "-m", "main", \
-     "--database_hostname", "${database_hostname}", \
-     "--database-port", "${database_port}", \
-     "--database-password", "${database_password}", \
-     "--database-name", "${database_name}", \
-     "--database-username", "${database_username}", \
-     "--secret-key", "${secret_key}", \
-     "--algorithm", "${algorithm}", \
-     "--mail-api-key", "${mail_api_key}", \
-     "--email-template-id", "${email_template_id}", \
-     "--password-salt", "${password_salt}", \
-     "--from-email", "${from_email}", \
-     "--PROJECT-ID", "${PROJECT_ID}", \
-     "--KUBERNETES_SERVICE_HOST", "${KUBERNETES_SERVICE_HOST}" \
+CMD ["python", "-m", "main",
+     "--database_hostname", "${database_hostname}",
+     "--database-port", "${database_port}",
+     "--database-password", "${database_password}",
+     "--database-name", "${database_name}",
+     "--database-username", "${database_username}",
+     "--secret-key", "${secret_key}",
+     "--algorithm", "${algorithm}",
+     "--mail-api-key", "${mail_api_key}",
+     "--email-template-id", "${email_template_id}",
+     "--password-salt", "${password_salt}",
+     "--from-email", "${from_email}",
+     "--PROJECT-ID", "${PROJECT_ID}",
+     "--KUBERNETES_SERVICE_HOST", "${KUBERNETES_SERVICE_HOST}"
     ]
