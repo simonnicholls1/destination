@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLoadScript } from '@react-google-maps/api';
-import HotelMap from './HotelMap';
+import HotelMap from '../components/hotel/HotelMap';
 
 const HotelDetail = () => {
 

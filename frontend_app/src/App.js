@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './components/HomePage.js';
-import LoginPage from './components/LoginForm.js';
-import HotelDetail from './components/HotelDetail.js';
-import Profile from './components/Profile.js'
-import HotelResults from './components/HotelResults.js'
-import Blog from './components/Blog.js';
+import HomePage from './pages/HomePage.js';
+import LoginPage from './pages/LoginForm.js';
+import HotelDetail from './pages/HotelDetail.js';
+import Profile from './pages/Profile.js'
+import HotelResults from './pages/HotelResults.js'
+import Blog from './pages/Blog.js';
 
 const App = () => (
   <Router>

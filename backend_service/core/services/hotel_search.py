@@ -14,7 +14,7 @@ class HotelSearch:
 
     def _get_accommodation_by_ids(self, accomodation_ids):
         print('Getting our hotels')
-        query = 'select external_id from accomodation a join accomodation_id i on a.id = i.accomodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
+        query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
         query_results = self.db.execute(query)
         accomodation_results = [row[0] for row in query_results.fetchall()]
         return accomodation_results
@@ -35,11 +35,11 @@ class HotelSearch:
     def get_featured_accommodation(self, no_to_get=8):
         query = '''with with_accom as (
                  select * from 
-                 accomodation
+                 accommodation
                  limit {0})
                  select *, replace(photo_url, 'square60', 'max1280x900') as photo_url_big
                  from with_accom a
-                 join accomodation_type t
+                 join accommodation_type t
                  on t.type_id = a.accom_type_id'''.format(no_to_get)
         query_results = self.db.execute(query)
         accomodation_results = query_results.fetchall()

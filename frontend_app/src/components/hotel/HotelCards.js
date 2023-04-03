@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import CampType from '../img/camp_type.png'
-import HotelType from '../img/hotel_type.png'
-import VillaType from '../img/villa_type.png'
+import CampType from '../../assets/img/camp_type.png'
+import HotelType from '../../assets/img/hotel_type.png'
+import VillaType from '../../assets/img/villa_type.png'
 
 const Card = ({ hotel }) => {
     const cardStyles = {

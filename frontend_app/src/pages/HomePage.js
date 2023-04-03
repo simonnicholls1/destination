@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../styling/HomePage.css';
+import '../assets/styling/HomePage.css';
 import { getCookie } from '../utilities/cookies.js';
-import NavBar from './NavBar';
-import CardList from './HotelCards'
-import DestinationCardList from './DestinationCards';
-import BlogCardList from './BlogCards';
+import NavBar from '../components/common/NavBar';
+import CardList from '../components/hotel/HotelCards'
+import DestinationCardList from '../components/destination/DestinationCards';
+import BlogCardList from '../components/blog/BlogCards';
 
 
 const HomePage = () => {
@@ -14,7 +14,7 @@ const HomePage = () => {
 
   useEffect(() => {
     // send a request to the server to get the logged-in user's information
-    fetch('destinationapi/users/info', {
+    fetch('destinationapi/users/', {
       headers: {
         'Authorization': `Bearer ${getCookie('jwt')}`,
       },

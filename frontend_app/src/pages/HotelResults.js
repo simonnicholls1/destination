@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Button, Row} from 'react-bootstrap';
 import qs from 'qs';
-import NavBar from './NavBar'
-import CardList from './HotelCards'
-import HotelFilter from './HotelFilter';
-import HotelMapMulti from './HotelMapMulti';
+import NavBar from '../components/common/NavBar'
+import CardList from '../components/hotel/HotelCards'
+import HotelFilter from '../components/hotel/HotelFilter';
+import HotelMapMulti from '../components/hotel/HotelMapMulti';
 
 function HotelResults() {
   

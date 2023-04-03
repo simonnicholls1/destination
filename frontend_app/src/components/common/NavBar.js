@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from '../img/destination_logo.jpg'
-import profile from '../img/profile.png'
-import search from '../img/search.png'
+import logo from '../../assets/img/destination_logo.jpg'
+import profile from '../../assets/img/profile.png'
+import search from '../../assets/img/search.png'
 import { Link } from "react-router-dom";
 
 function Navbar() {
