@@ -24,7 +24,7 @@ const HomePage = () => {
 
       const fetchHotels = async () => {
         try {
-          const response = await fetch('destinationapi/accommodation/featured?no_results=10');
+          const response = await fetch('http://0.0.0.0:8000/destinationapi/accommodation/featured?no_results=10');
           if (!response.ok) {
             throw new Error(response.statusText);
           }
@@ -39,31 +39,61 @@ const HomePage = () => {
 
   const [destinations, setDestinations] = useState([
     {
-        country: "Country1",
-        description: "Description1",
-        image: "path/to/image1",
+      country: 'Sri Lanka',
+      description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
+      image: 'https://example.com/sri-lanka.jpg',
+      seasons: [
+        { name: 'Beg', months: [0, 1, 2]  },
+        { name: 'Int', months: [3, 4, 5]  },
+        { name: 'Adv', months: [6, 7, 8] },
+         {
+            name: 'Swell',
+            months: [
+            'green', 'purple', 'grey',
+            'green', 'purple', 'grey',
+            'green', 'purple', 'grey',
+            'green', 'purple', 'grey',
+            ],
+        },
+        ,
+  {
+    name: 'Water Temp',
+    months: [
+      'warm',
+      'warm',
+      'mild',
+      'mild',
+      'mild',
+      'mild',
+      'warm',
+      'warm',
+      'warm',
+      'warm',
+      'mild',
+      'mild',
+    ],
+  },
+  {
+    name: 'Weather',
+    months: [
+      'sunny',
+      'sunny',
+      'sunny',
+      'sunny',
+      'sunny',
+      'sunny',
+      'cloudy',
+      'cloudy',
+      'cloudy',
+      'cloudy',
+      'cloudy',
+      'sunny',
+    ],
     },
-    {
-        country: "Country2",
-        description: "Description2",
-        image: "path/to/image2",
-    },
-    {
-        country: "Country3",
-        description: "Description3",
-        image: "path/to/image3",
-    },
-    {
-        country: "Country4",
-        description: "Description4",
-        image: "path/to/image4",
-    },
-    {
-        country: "Country5",
-        description: "Description5",
-        image: "path/to/image5",
+      ],
     }
   ]);
+
 
   const [hotels, setHotels] = useState([]);
 
