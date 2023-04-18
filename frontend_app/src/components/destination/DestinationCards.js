@@ -6,13 +6,14 @@ import weather_cloud from '../../assets/img/weather-cloud.png'
 
 const DestinationCard = ({ country, description, image, onClick, seasons }) => {
   const cardStyles = {
-    width: '350px',
-    height: '400px',
+    width: '400px',
+    height: '420px',
     border: '1px solid lightgray',
     borderRadius: '10px',
     textAlign: 'center',
     padding: '10px',
     position: 'relative',
+    boxSizing: 'border-box',
   };
 
   const titleStyles = {
@@ -128,7 +129,28 @@ return (
     {seasons.map((season, index) => (
       <div key={index} style={seasonRowStyles}>
         <div style={seasonLabelStyles}>{season.name}</div>
-        {season.name === 'Swell' ? (
+         {season.name === 'Beg' || season.name === 'Int' || season.name === 'Adv' ? (
+          <div style={{ display: 'flex', width: 'calc(100% - 50px)' }}>
+            {months.map((month, monthIndex) => (
+              <div
+                key={monthIndex}
+                style={{
+                  display: 'flex',
+                  flexBasis: 'calc(100% / 12)',
+                  boxSizing: 'border-box',
+                  paddingLeft: '1px',
+                  paddingRight: '1px',
+                }}
+              >
+                {season.months.includes(monthIndex) ? (
+                  <div style={seasonBarStyles(monthIndex)} />
+                ) : (
+                  <div />
+                )}
+              </div>
+            ))}
+          </div>
+        ) : season.name === 'Swell' ? (
           <div style={{ display: 'flex', width: 'calc(100% - 50px)', ...borderStyles }}>
            <div style={borderStyles}> </div>
             {season.months.map((color, monthIndex) => (
@@ -193,24 +215,8 @@ return (
               </div>
             ))}
           </div>
-        )
-        : (
-          <div style={{ display: 'flex', width: 'calc(100% - 50px)' }}>
-            {months.map((month, monthIndex) => (
-              <div
-                key={monthIndex}
-                style={{
-                  display: 'flex',
-                  flexBasis: 'calc(100% / 12)',
-                  boxSizing: 'border-box',
-                  paddingLeft: '1px',
-                  paddingRight: '1px',
-                }}
-              >
-                <div style={seasonBarStyles(monthIndex)} />
-              </div>
-            ))}
-          </div>
+        ): (
+          <div />
         )}
       </div>
     ))}
@@ -226,8 +232,8 @@ return (
 const DestinationCardList = ({ destinations, onClick }) => {
   const cardListStyles = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gridGap: '10px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 400px))',
+    gridGap: '20px',
     padding: '10px',
   }
   return (

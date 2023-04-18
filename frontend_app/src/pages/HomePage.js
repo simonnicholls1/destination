@@ -46,50 +46,48 @@ const HomePage = () => {
         { name: 'Beg', months: [0, 1, 2]  },
         { name: 'Int', months: [3, 4, 5]  },
         { name: 'Adv', months: [6, 7, 8] },
-         {
-            name: 'Swell',
-            months: [
-            'green', 'purple', 'grey',
-            'green', 'purple', 'grey',
-            'green', 'purple', 'grey',
-            'green', 'purple', 'grey',
-            ],
-        },
-        ,
-  {
-    name: 'Water Temp',
-    months: [
-      'warm',
-      'warm',
-      'mild',
-      'mild',
-      'mild',
-      'mild',
-      'warm',
-      'warm',
-      'warm',
-      'warm',
-      'mild',
-      'mild',
-    ],
-  },
-  {
-    name: 'Weather',
-    months: [
-      'sunny',
-      'sunny',
-      'sunny',
-      'sunny',
-      'sunny',
-      'sunny',
-      'cloudy',
-      'cloudy',
-      'cloudy',
-      'cloudy',
-      'cloudy',
-      'sunny',
-    ],
+        { name: 'Swell', months: ['green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey']},
+        { name: 'Water Temp', months: ['warm','warm','mild','mild','mild','mild','warm','warm','warm','warm','mild','mild']},
+        { name: 'Weather', months: ['sunny','sunny','sunny','sunny','sunny','sunny','cloudy','cloudy','cloudy','cloudy','cloudy','sunny']},
+      ],
     },
+    {
+      country: 'Sri Lanka',
+      description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
+      image: 'https://example.com/sri-lanka.jpg',
+      seasons: [
+        { name: 'Beg', months: [0, 1, 2]  },
+        { name: 'Int', months: [3, 4, 5]  },
+        { name: 'Adv', months: [6, 7, 8] },
+        { name: 'Swell', months: ['green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey']},
+        { name: 'Water Temp', months: ['warm','warm','mild','mild','mild','mild','warm','warm','warm','warm','mild','mild']},
+        { name: 'Weather', months: ['sunny','sunny','sunny','sunny','sunny','sunny','cloudy','cloudy','cloudy','cloudy','cloudy','sunny']},
+      ],
+    },
+    {
+      country: 'Sri Lanka',
+      description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
+      image: 'https://example.com/sri-lanka.jpg',
+      seasons: [
+        { name: 'Beg', months: [0, 1, 2]  },
+        { name: 'Int', months: [3, 4, 5]  },
+        { name: 'Adv', months: [6, 7, 8] },
+        { name: 'Swell', months: ['green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey']},
+        { name: 'Water Temp', months: ['warm','warm','mild','mild','mild','mild','warm','warm','warm','warm','mild','mild']},
+        { name: 'Weather', months: ['sunny','sunny','sunny','sunny','sunny','sunny','cloudy','cloudy','cloudy','cloudy','cloudy','sunny']},
+      ],
+    },
+    {
+      country: 'Sri Lanka',
+      description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
+      image: 'https://example.com/sri-lanka.jpg',
+      seasons: [
+        { name: 'Beg', months: [0, 1, 2]  },
+        { name: 'Int', months: [3, 4, 5]  },
+        { name: 'Adv', months: [6, 7, 8] },
+        { name: 'Swell', months: ['green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey','green', 'purple', 'grey']},
+        { name: 'Water Temp', months: ['warm','warm','mild','mild','mild','mild','warm','warm','warm','warm','mild','mild']},
+        { name: 'Weather', months: ['sunny','sunny','sunny','sunny','sunny','sunny','cloudy','cloudy','cloudy','cloudy','cloudy','sunny']},
       ],
     }
   ]);
@@ -99,26 +97,31 @@ const HomePage = () => {
 
   const blogs = [
     {
-        title: 'The Importance of Self-Care',
-        image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        text: 'Self-care is not a luxury but a necessity for maintaining good physical, mental and emotional health. It’s an active process that requires time and effort...'
+        title: 'Top 5 surf spots in Ahangama, Sri Lanka',
+        date: '14th May 2022',
+        image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
+        text: 'Do you want to go to Sri Lanka for your next surfing holiday? Even if you are just learning to surf or if you are a more experienced surfer – Sri Lanka got some great surf spots for you! Here we list our five...'
     },
     {
         title: 'Top Destinations for a Winter Getaway',
-        image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        text: 'Winter is here and for many, it’s a time to dream of a warm and sunny escape. If you’re looking to escape the cold weather and want to experience some...'
+        date: '14th May 2022',
+        image: 'https://plus.unsplash.com/premium_photo-1664116928415-0525b7abcd03?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
+        text: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...'
     },
     {
         title: 'Why Traveling Solo Can Be The Best Experience',
-        image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        text: 'Traveling solo can be a scary and daunting thought for some, but it can also be one of the most rewarding and liberating experiences of your life. Here are some reasons why...'
+        date: '14th May 2022',
+        image: 'https://images.unsplash.com/photo-1558980664-1db506751c6c?auto=format&fit=crop&w=500&q=60',
+        text: 'You usually become more independent when you get to this level of surfing, which also mean being more strict and picky with what you’re riding, but it’s really important that you develop the skills needed to ride...'
     },
     {
         title: 'How to Pack Light for Your Next Trip',
-        image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-        text: 'Packing light can be a challenge, but it’s worth the effort to make your travels easier and more enjoyable. Here are some tips and tricks for packing light for your next trip...'
+        date: '14th May 2022',
+        image: 'https://images.unsplash.com/photo-1531722569936-825d3dd91b15?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
+        text: 'Casper Steinfath is a Danish surfer, adventure addict and 6X SUP World Champion winner, who recently visited our camp in Norway. Even though he has the opportunity to visit some incredible places all over the world,...'
     },
 ]
+
 
   return (
       <><NavBar /><div className="home-page">
