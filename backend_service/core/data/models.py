@@ -50,7 +50,7 @@ class Accommodation(Base):
     country_code = Column(String(3), nullable=False)
     post_code = Column(String(20), nullable=False)
     latitude = Column(Float, nullable=False)
-    longitude = Column(Float, nullable=False, unique=True)
+    longitude = Column(Float, nullable=False)
     accom_type_id = Column(Integer, nullable=False)
     booking_url = Column(String(800), nullable=True)
     photo_url = Column(String(800), nullable=True)

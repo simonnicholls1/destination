@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../assets/styling/HomePage.css';
 import { getCookie } from '../utilities/cookies.js';
 import NavBar from '../components/common/NavBar';
+import Footer from '../components/common/Footer';
 import CardList from '../components/hotel/HotelCards'
 import DestinationCardList from '../components/destination/DestinationCards';
 import BlogCardList from '../components/blog/BlogCards';
@@ -24,7 +25,7 @@ const HomePage = () => {
 
       const fetchHotels = async () => {
         try {
-          const response = await fetch('http://0.0.0.0:8000/destinationapi/accommodation/featured?no_results=10');
+          const response = await fetch('destinationapi/accommodation/featured?no_results=8');
           if (!response.ok) {
             throw new Error(response.statusText);
           }
@@ -137,7 +138,8 @@ const HomePage = () => {
         <h2>Get informed for your next trip</h2>
         <BlogCardList blogs={blogs}/>
       </section>
-    </div></>
+    </div>
+    <Footer /></>
   );
 };
 

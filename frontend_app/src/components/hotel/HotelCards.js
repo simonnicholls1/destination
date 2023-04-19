@@ -5,26 +5,36 @@ import VillaType from '../../assets/img/villa_type.png'
 
 const Card = ({ hotel }) => {
     const cardStyles = {
-        padding: '10px',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         alignItems: 'center',
-        flexDirection: 'column',    
-        margin: '0px',
-        height: '400px'
+        flexDirection: 'column',
+        width: '340px',
+        height: '460px',
     }
 
-    const hotel_name = {
-        whiteSpace: 'normal',
-        wordWrap: 'break-word'
-      }
+const hotelNameStyles = {
+  display: '-webkit-box',
+  '-webkit-line-clamp': 2,
+  '-webkit-box-orient': 'vertical',
+  overflow: 'hidden',
+  whiteSpace: 'normal',
+  wordWrap: 'break-word',
+  fontSize: '14px'
+};
+
+   const locationStyles = {
+    fontSize: '14px',
+    color: 'rgba(0, 0, 0, 0.5)',
+    marginBottom: '5px'
+  }
 
     const imageStyles = {
         boxShadow: '0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.23)',
         borderRadius: '1em',
         width: '100%',
-        height: '70%',   
+        height: '70%',
     }
 
     const faviconStyles = {
@@ -81,29 +91,29 @@ const Card = ({ hotel }) => {
     const foundHotelType = hotelTypeImages.find(item => item.type === hotel.type)
     const hotelTypeImage = foundHotelType ? foundHotelType.image : hotelTypeImages.default;
 
-    return(
-        <div style={cardStyles} onClick={handleClick}>
-        <img src={hotel.photo_url_big} alt={hotel.name} style={imageStyles} />
-            <div>
-                <img src={hotelTypeImage} style={faviconStyles}></img>
-                <h4 style={hotel_name}>{hotel.name}</h4>
-            </div>
-            <div>{hotel.country}</div>
-            <div>{hotel.city}</div>
-            <div>
-                <span style={{ color: 'orange' }}>{hotel.price}</span>
-                <div style={bowStyles}>
-                    <p>{hotel.user_rating}</p>
-                </div>
-            </div>
-    </div>)
+     return (
+    <div style={cardStyles} onClick={handleClick}>
+      <img src={hotel.photo_url_big} alt={hotel.name} style={imageStyles} />
+      <div>
+        <img src={hotelTypeImage} style={faviconStyles} alt={`${hotel.type} icon`} />
+        <h4 style={hotelNameStyles}>{hotel.name}</h4>
+      </div>
+      <div style={locationStyles}>
+        {hotel.country}, {hotel.city}
+      </div>
+      <div>
+        <span style={{ color: 'orange', fontSize: '18px' }}>{hotel.price}</span>
+        <span style={{ fontSize: '18px', margin: '0' }}>{hotel.user_rating}</span>
+        </div>
+      </div>
+
+  )
 };
 
 const cardListStyles = (row_items, col_items) => {
     return {
         display: 'grid',
-        gridTemplateRows: `repeat(${col_items}, 1fr)`,
-        gridTemplateColumns: `repeat(${row_items}, 1fr)`,
+        gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 340px))',
         gridGap: '10px'
     }
 }

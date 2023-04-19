@@ -36,6 +36,7 @@ class HotelSearch:
         query = '''with with_accom as (
                  select * from 
                  accommodation
+                 order by random()
                  limit {0})
                  select *, replace(photo_url, 'square60', 'max1280x900') as photo_url_big
                  from with_accom a

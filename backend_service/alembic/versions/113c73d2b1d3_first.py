@@ -36,8 +36,7 @@ def upgrade():
                     sa.Column('date_added', sa.TIMESTAMP(timezone=True), server_default='now()', nullable=False),
                     sa.Column('date_updated', sa.TIMESTAMP(timezone=True), nullable=True),
                     sa.Column('active', sa.BOOLEAN(), server_default='t', nullable=False),
-                    sa.PrimaryKeyConstraint('id'),
-                    sa.UniqueConstraint('longitude')
+                    sa.PrimaryKeyConstraint('id')
                     )
     op.create_table('accommodation_id',
                     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
