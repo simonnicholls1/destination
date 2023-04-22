@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Container, Button, Row} from 'react-bootstrap';
 import qs from 'qs';
 import NavBar from '../components/common/NavBar'
+import Footer from '../components/common/Footer'
 import CardList from '../components/hotel/HotelCards'
 import HotelFilter from '../components/hotel/HotelFilter';
 import HotelMapMulti from '../components/hotel/HotelMapMulti';
@@ -24,7 +25,7 @@ function HotelResults() {
 
   const handleSearch = (location_value, arrival, departure, guests) => {
     // send a request to the server to get the search results based on the search criteria
-    fetch(`http://0.0.0.0:8900/accommodation/searchlocation?place=${location_value}&arrival_date=${arrival}&departure_date=${departure}&guests=${guests}`, {
+    fetch(`localhost:8000/destinationapi/accommodation/searchlocation?place=${location_value}&arrival_date=${arrival}&departure_date=${departure}&guests=${guests}`, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     //body: JSON.stringify(searchCriteria),
@@ -61,37 +62,54 @@ function HotelResults() {
     handleSearch(location_value, arrival, departure, guests);
   }, [location.search]);
 
-  const filterBox = {
+const filterBox = {
     position: 'fixed',
-    left: '10px',
+    paddingTop: '70px',
+    left: '37px',
     width: '250px',
     height: '100vh',
     overflowY: 'auto'
 }
 
 const hotelList = {
-    marginLeft: '310px',
+    paddingTop: '70px',
+    paddingLeft: '310px',
     height: '100vh',
     overflowY: 'auto'
 }
 
+const hotelResultsStyle = {
+     paddingTop: '90px'
+}
+
+const hotelResultsTitle = {
+    alignItems: 'center',
+    paddingRight: '37px',
+    paddingLeft: '40px',
+    position: 'fixed',
+    zIndex: 1000,
+    backgroundColor: 'white',
+};
 
   return (
-    <div>
-    <React.StrictMode>
-    <NavBar />
-    <Container>
-      <h2>Hotel Results</h2>
-      <div style={filterBox}>
-      <HotelFilter hotels={hotels} handleFilter={handleFilter}/>
-      </div> 
-      <div style={hotelList}>
-      <button onClick={() => setShowMap(!showMap)}>Show Map</button>
-      {showMap ? <HotelMapMulti hotels={filteredHotels} /> : <CardList hotels={filteredHotels} col_items={4}/>}
-      </div> 
-    </Container>
-    </React.StrictMode>
-    </div>
+    <>
+      <NavBar />
+      <div style={hotelResultsStyle}>
+        <React.StrictMode>
+          <Container>
+            <h2 style={hotelResultsTitle}>Hotel Results</h2>
+            <div style={filterBox}>
+              <HotelFilter hotels={hotels} handleFilter={handleFilter}/>
+            </div>
+            <div style={hotelList}>
+              <button onClick={() => setShowMap(!showMap)}>Show Map</button>
+              {showMap ? <HotelMapMulti hotels={filteredHotels} /> : <CardList hotels={filteredHotels} col_items={4}/>}
+            </div>
+          </Container>
+        </React.StrictMode>
+      </div>
+      <Footer />
+    </>
   );
 }
 

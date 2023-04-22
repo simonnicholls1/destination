@@ -50,13 +50,13 @@ function Footer() {
          <a style={textStyles}>Copyright DestinationSurf.com</a>
           <Link
             style={linkStyles}
-            to="/Destinations"
+            to="/destinations"
           >
             Destinations
           </Link>
           <Link
             style={linkStyles}
-            to="/Blog"
+            to="/blogs"
           >
             Blog
           </Link>

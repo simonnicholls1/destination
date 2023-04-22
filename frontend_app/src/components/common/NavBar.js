@@ -159,7 +159,7 @@ const [blogHover, setBlogHover] = useState(false);
      <div style={linkContainerStyles}>
         <Link
           style={destHover ? linkHoverStyles : linkStyles}
-          to="/Destinations"
+          to="/destinations"
           onMouseEnter={() => setDestHover(true)}
           onMouseLeave={() => setDestHover(false)}
         >
@@ -167,7 +167,7 @@ const [blogHover, setBlogHover] = useState(false);
         </Link>
         <Link
           style={blogHover ? linkHoverStyles : linkStyles}
-          to="/Blog"
+          to="/blogs"
           onMouseEnter={() => setBlogHover(true)}
           onMouseLeave={() => setBlogHover(false)}
         >
