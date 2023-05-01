@@ -14,10 +14,21 @@ class HotelSearch:
 
     def _get_accommodation_by_ids(self, accomodation_ids):
         print('Getting our hotels')
-        query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
+        if len(accomodation_ids) == 1:
+            query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id = {0}'.format(
+                accomodation_ids[0])
+        else:
+            query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
         query_results = self.db.execute(query)
         accomodation_results = [row[0] for row in query_results.fetchall()]
         return accomodation_results
+
+    def get_accommodation_by_id(self, accommodation_id):
+        print('Getting hotel')
+        query = f'select * from accommodation a join accommodation_id_mapping aim on aim.accommodation_id = a.id where a.id = {accommodation_id}'
+        query_results = self.db.execute(query)
+        accommodation_results = query_results.fetchone()
+        return accommodation_results
 
     def get_accommodation(self, arrival_date, departure_date, latitude, longitude, guests):
         hotels, hotel_ids = self._get_accommodation_availability(arrival_date, departure_date, latitude, longitude, guests)

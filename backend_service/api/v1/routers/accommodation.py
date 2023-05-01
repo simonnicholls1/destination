@@ -29,3 +29,13 @@ def featured_hotes(no_results, db: Session = Depends(get_db)):
     if hotels is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
     return hotels
+
+
+@router.get("/hotelbyid")
+def featured_hotes(hotel_id, db: Session = Depends(get_db)):
+    hotel_search = HotelSearch(db)
+    hotel_id = int(hotel_id)
+    hotel = hotel_search.get_accommodation_by_id(hotel_id)
+    if hotel is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
+    return hotel
