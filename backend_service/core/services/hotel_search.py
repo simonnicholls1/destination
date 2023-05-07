@@ -1,6 +1,6 @@
 import requests
 from backend_service.core.services.hotel_availability import HotelAvailability
-
+from backend_service.core.data.models import AccommodationIdMapping
 
 class HotelSearch:
     def __init__(self, database):

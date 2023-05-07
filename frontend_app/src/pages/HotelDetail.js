@@ -73,6 +73,8 @@ const HotelDetail = () => {
   const { hotelID } = useParams();
   const [hotel, setHotel] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const [reviews, setReviews] = useState(null);
+  const [facilities, setFacilities] = useState(null);
   const [propertyPhotos, setPropertyPhotos] = useState(null);
 
 
@@ -81,54 +83,20 @@ useEffect(() => {
   const fetchHotelData = async (id) => {
     try {
       const response = await fetch(
-        'http://0.0.0.0:8000/destinationapi/accommodation/hotelbyid?hotel_id=' + id
+        'http://0.0.0.0:8000/destinationapi/accommodation/hoteldetails?hotel_id=' + id
       );
       const hotelData = await response.json();
-      setHotel(hotelData);
-      return hotelData;
+      setHotel(hotelData["hotel"]);
+      setPhotos(hotelData["photos"]["all_photos"]);
+      setPropertyPhotos(hotelData["photos"]["property_photos"]);
+      setReviews(hotelData["reviews"]);
+      setFacilities(hotelData["facilities"]);
     } catch (error) {
       console.error("Error fetching hotel data:", error);
     }
   };
 
-  // Function to fetch photos from API
-  const fetchPhotos = async (id) => {
-    const url = `https://apidojo-booking-v1.p.rapidapi.com/properties/get-hotel-photos?hotel_ids=${id}&languagecode=en-us`;
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '7fc59bc869mshf413bded09697a6p12e80djsnfbd1bae47b0b',
-        'X-RapidAPI-Host': 'apidojo-booking-v1.p.rapidapi.com',
-      },
-    };
-
-    try {
-      const response = await fetch(url, options);
-      let photoData = await response.json();
-      const prefix_url = photoData.url_prefix
-      photoData = parseData(photoData.data[id]);
-      const updatedPhotoData = photoData.map(photo => ({
-          tags: photo.tags,
-          url: prefix_url + photo.photo_url
-        }));
-
-      setPhotos(updatedPhotoData);
-
-      const propPhotos = updatedPhotoData
-        .filter(item => item.tags.includes('Property'))
-        .map(item => ({url: item.url, tags: item.tags}));
-
-      // Update the state with the photo URLs
-      setPropertyPhotos(propPhotos);
-
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-    }
-  };
-
- fetchHotelData(hotelID).then((hotelData) => {
-    fetchPhotos(hotelData.external_id);
-    });
+ fetchHotelData(hotelID);
 }, [hotelID]);
 
 
@@ -145,7 +113,7 @@ useEffect(() => {
 const largeImage = {
   width: '600px',
   height: '500px',
-  borderRadius: '10px',
+  borderRadius: '15px',
 };
 
 const gridImages = {
@@ -157,33 +125,33 @@ const gridImages = {
 const gridImage = {
   width: '220px',
   height: '245px',
-  borderRadius: '10px',
+  borderRadius: '15px',
 };
 
 
-  const hotelTypeLogo = {
-    // Add styling for the hotel type logo
-  };
+const hotelTypeLogo = {
+// Add styling for the hotel type logo
+};
 
-  const hotelRooms = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '10px',
-  };
+const hotelRooms = {
+display: 'flex',
+flexWrap: 'wrap',
+gap: '10px',
+};
 
-  const ratings = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '10px',
-  };
+const ratings = {
+display: 'flex',
+flexWrap: 'wrap',
+gap: '10px',
+};
 
-  const hotelDetailStyle = {
-    alignItems: 'center',
-    paddingTop: '100px',
-    paddingRight: '37px',
-    paddingLeft: '40px',
-    paddingBottom: '50px'
-  }
+const hotelDetailStyle = {
+alignItems: 'center',
+paddingTop: '100px',
+paddingRight: '37px',
+paddingLeft: '40px',
+paddingBottom: '50px'
+}
 
   return (
     <>

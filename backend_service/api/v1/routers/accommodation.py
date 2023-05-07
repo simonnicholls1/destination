@@ -34,8 +34,7 @@ def featured_hotes(no_results, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
     return hotels
 
-
-@router.get("/hotelbyid")
+@router.get("/hotel")
 def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     hotel_search = HotelSearch(db)
     hotel_id = int(hotel_id)
@@ -43,6 +42,25 @@ def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     if hotel is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
     return hotel
+
+@router.get("/hoteldetails")
+async def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
+    hotel_search = HotelSearch(db)
+    photo_service = HotelPhotos()
+    facilities_service = HotelFacilities()
+    review_service = HotelReviews()
+
+    hotel_id = int(hotel_id)
+    hotel = hotel_search.get_accommodation_by_id(hotel_id)
+    if hotel is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
+
+    external_id = hotel["external_id"]
+    photos = await photo_service.fetch_photos(external_id)
+    facilities = await facilities_service.fetch_facilities(external_id)
+    reviews = await review_service.fetch_reviews(external_id)
+
+    return {"hotel": hotel, "photos": photos, "facilities": facilities, "reviews": reviews}
 
 @router.get("/hotelphotos")
 async def hotel_photos(hotel_id):

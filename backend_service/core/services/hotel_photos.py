@@ -7,7 +7,7 @@ class HotelPhotos:
             'X-RapidAPI-Key': '7fc59bc869mshf413bded09697a6p12e80djsnfbd1bae47b0b',
             'X-RapidAPI-Host': 'apidojo-booking-v1.p.rapidapi.com',
         }
-        self.url = f"https://apidojo-booking-v1.p.rapidapi.com/properties/get-featured-reviews"
+        self.url = f"https://apidojo-booking-v1.p.rapidapi.com/properties/get-hotel-photos"
 
     def get_accomodation_photo_urls(self, hotel_id: int):
         print('Getting hotel photos')
@@ -18,28 +18,23 @@ class HotelPhotos:
 
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
 
-        updated_photo_data = []
-        prop_photos = []
 
         try:
-            response = requests.get(self.url, params=querystring,headers=self.headers)
+            response = requests.get(self.url, params=querystring, headers=self.headers)
             photo_data = response.json()
             prefix_url = photo_data['url_prefix']
 
             photos = []
-            for item in photo_data['data'][id]:
+            for item in photo_data['data'][str(hotel_id)]:
                 tags = [tag_obj['tag'] for tag_obj in item[3]]
-                photos.append({'photo_url': item[4], 'tags': tags})
+                url = prefix_url + item[4]
+                photos.append({'url': url, 'tags': tags})
 
-            updated_photo_data = [
-                {'tags': photo['tags'], 'url': prefix_url + photo['photo_url']} for photo in photos
-            ]
+            prop_photos = [{'url': item['url'], 'tags': item['tags']} for item in photos if 'Property' in item['tags']]
 
-            prop_photos = [
-                {'url': item['url'], 'tags': item['tags']} for item in updated_photo_data if 'Property' in item['tags']
-            ]
+            return {"all_photos": photos, "property_photos": prop_photos}
 
         except Exception as error:
             print("Error fetching photos:", error)
+            return {}
 
-        return updated_photo_data, prop_photos
