@@ -1,3 +1,5 @@
+from typing import Any, List, Dict
+
 import requests
 from backend_service.core.services.hotel_availability import HotelAvailability
 
@@ -11,10 +13,10 @@ class HotelReviews:
         }
         self.url = "https://apidojo-booking-v1.p.rapidapi.com/reviews/get-scores"
 
-    def get_accomodation_photo_reviews(self, hotel_id: int):
+    def get_accomodation_reviews(self, hotel_id: int):
         print('Getting hotel reviews')
-        hotels_photo_urls = self.fetch_photos(hotel_id)
-        return hotels_photo_urls
+        reviews = self.fetch_reviews(hotel_id)
+        return reviews
 
     async def fetch_reviews(self, hotel_id: int):
         reviews = []
@@ -24,8 +26,27 @@ class HotelReviews:
         try:
             response = requests.get(self.url, params=querystring, headers=self.headers)
             reviews = response.json()
+            if type(reviews) == list:
+                reviews = reviews[0]
+            total_count, avg_score = self._calc_total_avg_score(reviews['score_breakdown'])
+
+            reviews['avg_score'] = avg_score
+            reviews['total_count'] = total_count
 
         except Exception as error:
-            print("Error fetching photos:", error)
+            print("Error fetching reviews:", error)
 
         return reviews
+
+    def _calc_total_avg_score(self, score_breakdowns: List[Dict[str, Any]]):
+        total_count = 0
+        score = 0
+
+        for score_breakdown in score_breakdowns:
+            total_count += score_breakdown['count']
+            avg_score = float(score_breakdown['average_score'])
+            score += (score_breakdown['count'] * avg_score)
+
+        score = score/total_count
+
+        return (total_count, round(score, 2))

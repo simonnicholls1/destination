@@ -6,7 +6,8 @@ const HotelMap = ({ hotel }) => {
 
   const mapContainerStyle = {
     height: '400px',
-    width: '800px'
+    width: '800px',
+    marginBottom: '10px'
   };
 
   const center = {

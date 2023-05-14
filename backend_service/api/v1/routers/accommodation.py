@@ -1,6 +1,7 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend_service.core.data.database import get_db
+from backend_service.core.services.hotel_description import HotelDescription
 from backend_service.core.services.hotel_search import HotelSearch
 from backend_service.core.services.geolocation import GeoLocation
 from backend_service.core.services.hotel_reviews import HotelReviews
@@ -49,6 +50,7 @@ async def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     photo_service = HotelPhotos()
     facilities_service = HotelFacilities()
     review_service = HotelReviews()
+    description_service = HotelDescription()
 
     hotel_id = int(hotel_id)
     hotel = hotel_search.get_accommodation_by_id(hotel_id)
@@ -59,8 +61,9 @@ async def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     photos = await photo_service.fetch_photos(external_id)
     facilities = await facilities_service.fetch_facilities(external_id)
     reviews = await review_service.fetch_reviews(external_id)
+    description = await description_service.fetch_description(external_id)
 
-    return {"hotel": hotel, "photos": photos, "facilities": facilities, "reviews": reviews}
+    return {"hotel": hotel, "description": description, "photos": photos, "facilities": facilities, "reviews": reviews}
 
 @router.get("/hotelphotos")
 async def hotel_photos(hotel_id):

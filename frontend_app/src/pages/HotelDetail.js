@@ -6,77 +6,35 @@ import RatingCard from '../components/hotel/RatingCard';
 import NavBar from '../components/common/NavBar';
 import Footer from '../components/common/Footer';
 
-const sampleHotel = {
-  name: "Sample Hotel",
-  largeImage: "https://via.placeholder.com/600x400",
-  gridImages: [
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-  ],
-  typeLogo: "https://via.placeholder.com/50",
-  description:
-    "Sample Hotel is a luxurious and comfortable place to stay during your vacation. With a wide range of amenities and a great location, you'll find everything you need for a perfect getaway.",
-  facilities: [
-    "Free Wi-Fi",
-    "Swimming Pool",
-    "Fitness Center",
-    "Restaurant",
-    "Bar",
-  ],
-  rooms: [
-    {
-      name: "Deluxe Room",
-      image: "https://via.placeholder.com/300x200",
-      description:
-        "Our Deluxe Room offers a spacious and comfortable space to relax, with a king-size bed, private bathroom, and a variety of amenities to make your stay enjoyable.",
-      price: "150",
-    },
-    {
-      name: "Suite",
-      image: "https://via.placeholder.com/300x200",
-      description:
-        "Experience luxury in our Suite, featuring a separate living area, bedroom, and bathroom, as well as additional amenities to ensure a memorable stay.",
-      price: "250",
-    },
-  ],
-  ratings: [
-    {
-      user: "John Doe",
-      rating: 4.5,
-      review:
-        "I had a fantastic stay at Sample Hotel. The staff was friendly, the room was clean, and the amenities were top-notch. I'd definitely stay here again!",
-    },
-    {
-      user: "Jane Smith",
-      rating: 5,
-      review:
-        "Sample Hotel exceeded my expectations! From the moment I checked in, I felt welcomed and well taken care of. The facilities were excellent, and the location was perfect for exploring the city.",
-    },
-  ],
-  location: {
-    lat: 37.7749,
-    lng: -122.4194,
-  },
-  houseRules: "Please be respectful of other guests and keep noise to a minimum after 10 PM. No smoking is allowed in the rooms or common areas.",
+const HeadingWithBorder = ({ children }) => {
+  const borderStyles = {
+    borderTop: '1px solid #ccc',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    width: '100%'
+  };
+
+  const headingStyles = {
+    fontWeight: '350'
+  };
+
+  return (
+    <div style={borderStyles}>
+      <h2 style={headingStyles}>{children}</h2>
+    </div>
+  );
 };
 
-function parseData(input) {
-  return input.map((item) => {
-      const tags = item[3].map((tagObj) => tagObj.tag);
-      return { photo_url: item[4], tags: tags };
-  });
-}
 
 const HotelDetail = () => {
   const { hotelID } = useParams();
   const [hotel, setHotel] = useState(null);
   const [photos, setPhotos] = useState(null);
   const [reviews, setReviews] = useState(null);
+  const [description, setDescription] = useState(null);
   const [facilities, setFacilities] = useState(null);
   const [propertyPhotos, setPropertyPhotos] = useState(null);
-
+  const [isHovered, setIsHovered] = useState(false);
 
 useEffect(() => {
   // Function to fetch hotel data from API
@@ -90,6 +48,7 @@ useEffect(() => {
       setPhotos(hotelData["photos"]["all_photos"]);
       setPropertyPhotos(hotelData["photos"]["property_photos"]);
       setReviews(hotelData["reviews"]);
+      setDescription(hotelData["description"])
       setFacilities(hotelData["facilities"]);
     } catch (error) {
       console.error("Error fetching hotel data:", error);
@@ -99,12 +58,43 @@ useEffect(() => {
  fetchHotelData(hotelID);
 }, [hotelID]);
 
-
   if (hotel == null) {
-    return <div>Loading...</div>;
+  const loaderStyle = {
+    border: '16px solid #f3f3f3', // Light grey
+    borderTop: '16px solid #3498db', // Blue
+    borderRadius: '50%',
+    width: '120px',
+    height: '120px',
+    animation: 'spin 2s linear infinite',
+  };
+
+  const keyframes = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
+
+  // Add the @keyframes rule to the document
+  if (typeof document !== 'undefined') {
+    const styleSheet = document.styleSheets[0];
+    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
   }
 
-  const hotelImages = {
+  return (
+    <>
+      <NavBar />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'calc(100vh - 60px)', // Subtracting the height of the NavBar
+        //backgroundColor: '#ccc', // Or any other color you prefer
+      }}>
+        <div style={loaderStyle}></div>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+const hotelImages = {
+  paddingTop: '20px',
   display: 'flex',
   alignItems: 'flex-start',
   gap: '10px',
@@ -123,11 +113,10 @@ const gridImages = {
 };
 
 const gridImage = {
-  width: '220px',
+  width: '280px',
   height: '245px',
   borderRadius: '15px',
 };
-
 
 const hotelTypeLogo = {
 // Add styling for the hotel type logo
@@ -145,20 +134,62 @@ flexWrap: 'wrap',
 gap: '10px',
 };
 
+
 const hotelDetailStyle = {
-alignItems: 'center',
-paddingTop: '100px',
-paddingRight: '37px',
-paddingLeft: '40px',
-paddingBottom: '50px'
-}
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center', // Center the div
+  paddingTop: '100px',
+  paddingBottom: '50px',
+  paddingLeft: '30px', // Minimum left padding
+  paddingRight: '10px', // Minimum right padding
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  width: '1200px',
+  maxWidth: '100%',
+};
+
+
+const contentStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start', // Align content to the left
+  width: '100%',
+  maxWidth: '1200px', // Max width for the content
+};
+
+const borderStyles = {
+  borderTop: '1px solid #ccc',
+  paddingTop: '10px'
+};
+
+const inlineInfoStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'nowrap',
+  alignItems: 'center'
+};
 
   return (
     <>
     <NavBar />
     <div style={hotelDetailStyle}>
-      <h1>{hotel.name}</h1>
-
+     <div style={contentStyle}>
+      <h1 style={{ fontWeight: '350' }}>{hotel.name}</h1>
+      <div style={inlineInfoStyle}>
+            <span>⭐ {reviews.avg_score.toFixed(2)} - </span>
+            <a href="#reviews" style={{
+                textDecoration: isHovered ? 'underline' : 'none',
+                color: 'inherit'
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}>
+              <span style={{ cursor: 'pointer' }}>({reviews.total_count} reviews)</span>
+            </a>
+            <span> - {hotel.city},</span>
+            <span>{hotel.country}</span>
+     </div>
      <div style={hotelImages}>
       {propertyPhotos && propertyPhotos.length > 0 && (
         <>
@@ -172,21 +203,26 @@ paddingBottom: '50px'
       )}
     </div>
 
-
-
       <div style={hotelTypeLogo}>{hotel.typeLogo}</div>
 
-      <h2>Where you will be staying</h2>
-      <p>{hotel.description}</p>
+      <h2 style={{ fontWeight: '350'}}>Where you will be staying</h2>
+      <p>{description.main}</p>
 
-      <h2>What is there to offer</h2>
-     {/*
+      <HeadingWithBorder>For surfers</HeadingWithBorder>
       <ul>
-        {hotel.facilities.map((facility, idx) => (
-          <li key={idx}>{facility}</li>
+        {facilities && facilities.map((facility, idx) => (
+          <li key={idx}>{facility.facility_name}</li>
         ))}
       </ul>
-       */}
+
+      <HeadingWithBorder>Hotel Facilities</HeadingWithBorder>
+      <ul>
+        {facilities && facilities.map((facility, idx) => (
+          <li key={idx}>{facility.facility_name}</li>
+        ))}
+      </ul>
+
+     <HeadingWithBorder>Available Rooms</HeadingWithBorder>
 
     {/*
       <h2>Available Rooms</h2>
@@ -197,20 +233,16 @@ paddingBottom: '50px'
       </div>
      */}
 
-    {/*
-      <h2>Guest Ratings</h2>
-      <div style={ratings}>
-        {hotel.ratings.map((rating, idx) => (
-          <RatingCard key={idx} rating={rating} />
-        ))}
-      </div>
-     */}
+     <HeadingWithBorder>Reviews</HeadingWithBorder>
+     <div id="reviews"></div>
+     {/* Reviews section content */}
 
-      <h2>Where you will be located</h2>
-      <HotelMap hotel={hotel} />
-
-      <h2>House Rules</h2>
-      {/* Add house rules content here */}
+      <HeadingWithBorder>Where you will be located</HeadingWithBorder>
+      <HotelMap hotel={hotel}/>
+      <div style={{}}></div>
+      <HeadingWithBorder>House rules</HeadingWithBorder>
+      <p>{description.house_rules}</p>
+    </div>
     </div>
     <Footer />
     < />

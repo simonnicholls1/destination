@@ -131,8 +131,6 @@ const CustomInput = React.forwardRef(({ value, onClick, placeholder }, ref) => (
 const [destHover, setDestHover] = useState(false);
 const [blogHover, setBlogHover] = useState(false);
 
-
-
  return (
   <div>
     <nav style={navbarStyles}>
