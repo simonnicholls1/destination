@@ -84,15 +84,14 @@ const hotelNameStyles = {
     const [selectedHotel, setSelectedHotel] = useState(null);
     const handleClick = (hotel) => {
         setSelectedHotel(hotel);
-        sessionStorage.setItem("selectedHotel", JSON.stringify(hotel));
-        window.open(`/hotel/${hotel.booking_id}`);
+        window.open(`/hotel/${hotel.id}`);
       }
 
     const foundHotelType = hotelTypeImages.find(item => item.type === hotel.type)
     const hotelTypeImage = foundHotelType ? foundHotelType.image : hotelTypeImages.default;
 
      return (
-    <div style={cardStyles} onClick={handleClick}>
+    <div style={cardStyles} onClick={() => handleClick(hotel)}>
       <img src={hotel.photo_url_big} alt={hotel.name} style={imageStyles} />
       <div>
         <img src={hotelTypeImage} style={faviconStyles} alt={`${hotel.type} icon`} />

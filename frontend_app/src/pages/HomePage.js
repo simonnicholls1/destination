@@ -25,7 +25,7 @@ const HomePage = () => {
 
       const fetchHotels = async () => {
         try {
-          const response = await fetch('destinationapi/accommodation/featured?no_results=8');
+          const response = await fetch('http://0.0.0.0:8000/destinationapi/accommodation/featured?no_results=8');
           if (!response.ok) {
             throw new Error(response.statusText);
           }

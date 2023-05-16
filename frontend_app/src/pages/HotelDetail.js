@@ -5,10 +5,16 @@ import HotelRoomCard from '../components/hotel/HotelRoomCard';
 import RatingCard from '../components/hotel/RatingCard';
 import NavBar from '../components/common/NavBar';
 import Footer from '../components/common/Footer';
+import Button from '../components/common/Button'
+import { Modal } from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
+
+
 
 const HeadingWithBorder = ({ children }) => {
   const borderStyles = {
     borderTop: '1px solid #ccc',
+    marginTop: '10px',
     paddingTop: '10px',
     paddingBottom: '10px',
     width: '100%'
@@ -35,6 +41,10 @@ const HotelDetail = () => {
   const [facilities, setFacilities] = useState(null);
   const [propertyPhotos, setPropertyPhotos] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [showAllFacilities, setShowAllFacilities] = useState(false);
+
+
+
 
 useEffect(() => {
   // Function to fetch hotel data from API
@@ -171,6 +181,12 @@ const inlineInfoStyle = {
   alignItems: 'center'
 };
 
+const facilitiesStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)', // Divide the list into 4 columns
+  gap: '10px', // Add a 10px gap between each item
+};
+
   return (
     <>
     <NavBar />
@@ -209,18 +225,19 @@ const inlineInfoStyle = {
       <p>{description.main}</p>
 
       <HeadingWithBorder>For surfers</HeadingWithBorder>
-      <ul>
-        {facilities && facilities.map((facility, idx) => (
+      <ul style={facilitiesStyle}>
+        {facilities && facilities.slice(0, 12).map((facility, idx) => (
           <li key={idx}>{facility.facility_name}</li>
         ))}
       </ul>
 
       <HeadingWithBorder>Hotel Facilities</HeadingWithBorder>
-      <ul>
-        {facilities && facilities.map((facility, idx) => (
+      <ul style={facilitiesStyle}>
+        {facilities && facilities.slice(0, 12).map((facility, idx) => (
           <li key={idx}>{facility.facility_name}</li>
         ))}
       </ul>
+      <Button text="Show All" onClick={() => setShowAllFacilities(true)} />
 
      <HeadingWithBorder>Available Rooms</HeadingWithBorder>
 
@@ -245,7 +262,24 @@ const inlineInfoStyle = {
     </div>
     </div>
     <Footer />
-    < />
+       <Modal
+          open={showAllFacilities}
+          onClose={() => setShowAllFacilities(false)}
+          center
+          styles={{
+            modal: {
+              width: '500px',
+              height: '400px',
+              overflow: 'auto',
+            },
+          }}
+        >
+          <h2>All Facilities</h2>
+          {facilities && facilities.map((facility, idx) => (
+            <div key={idx}>{facility.facility_name}</div>
+          ))}
+        </Modal>
+    </>
   );
 };
 
