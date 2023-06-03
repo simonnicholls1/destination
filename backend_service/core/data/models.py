@@ -80,3 +80,34 @@ class AccomodationType(Base):
     __tablename__ = "accommodation_type"
     type_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     type = Column(String(30), nullable=False)
+
+
+class Destination(Base):
+    __tablename__ = "destination"
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    name = Column(String(30), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    date_added = Column(TIMESTAMP(timezone=True), nullable=False, server_default='now()',
+                        default=datetime.datetime.utcnow())
+    date_updated = Column(TIMESTAMP(timezone=True), nullable=True)
+    active = Column(BOOLEAN, nullable=False, server_default='t', default=True)
+
+
+class Beach(Base):
+    __tablename__ = "beach"
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    name = Column(String(30), nullable=False)
+    destination_id = Column(Integer, ForeignKey(
+        "destination.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    address = Column(String(300), nullable=False)
+    city = Column(String(100), nullable=False)
+    country = Column(String(100), nullable=False)
+    country_code = Column(String(3), nullable=False)
+    post_code = Column(String(20), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    date_added = Column(TIMESTAMP(timezone=True), nullable=False, server_default='now()',
+                        default=datetime.datetime.utcnow())
+    date_updated = Column(TIMESTAMP(timezone=True), nullable=True)
+    active = Column(BOOLEAN, nullable=False, server_default='t', default=True)

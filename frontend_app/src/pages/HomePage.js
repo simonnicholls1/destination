@@ -40,6 +40,7 @@ const HomePage = () => {
 
   const [destinations, setDestinations] = useState([
     {
+      id: 1,
       country: 'Sri Lanka',
       description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
       image: 'https://example.com/sri-lanka.jpg',
@@ -53,6 +54,7 @@ const HomePage = () => {
       ],
     },
     {
+      id: 1,
       country: 'Sri Lanka',
       description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
       image: 'https://example.com/sri-lanka.jpg',
@@ -66,6 +68,7 @@ const HomePage = () => {
       ],
     },
     {
+      id: 1,
       country: 'Sri Lanka',
       description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
       image: 'https://example.com/sri-lanka.jpg',
@@ -79,6 +82,7 @@ const HomePage = () => {
       ],
     },
     {
+      id: 1,
       country: 'Sri Lanka',
       description: 'What makes a great day to surf? Well, it depends. Some people will be happy no matter the conditions, but for those who want more than just water and waves, there are some key indicators to watch out for. You should...',
       image: 'https://example.com/sri-lanka.jpg',

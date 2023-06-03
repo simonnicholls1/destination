@@ -4,7 +4,7 @@ import water_temp_man from '../../assets/img/water-temp-man.png'
 import weather_sun from '../../assets/img/weather-sun.png'
 import weather_cloud from '../../assets/img/weather-cloud.png'
 
-const DestinationCard = ({ country, description, image, onClick, seasons }) => {
+const DestinationCard = ({ id, country, description, image, onClick, seasons }) => {
   const cardStyles = {
     width: '400px',
     height: '420px',
@@ -220,7 +220,7 @@ return (
         )}
       </div>
     ))}
-    <a href="#" style={linkStyles} onClick={onClick}>
+    <a href={`/destination/${id}`} style={linkStyles} onClick={onClick}>
       Read More
     </a>
   </div>
@@ -241,6 +241,7 @@ const DestinationCardList = ({ destinations, onClick }) => {
       {destinations.map((destination, index) => (
         <DestinationCard
           key={index}
+          id={destination.id}
           country={destination.country}
           description={destination.description}
           image={destination.image}

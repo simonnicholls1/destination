@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from api.v1.routers import post, user, auth, accommodation
+from api.v1.routers import post, user, auth, accommodation, destination
 
 # models.Base.metadata.create_all(bind=engine)
 
@@ -24,6 +24,7 @@ app.include_router(auth.router, prefix="/destinationapi")
 app.include_router(user.router, prefix="/destinationapi")
 app.include_router(post.router, prefix="/destinationapi")
 app.include_router(accommodation.router, prefix="/destinationapi")
+app.include_router(destination.router, prefix="/destinationapi")
 
 # Define the filter
 class EndpointFilter(logging.Filter):
