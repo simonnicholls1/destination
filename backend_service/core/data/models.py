@@ -3,22 +3,9 @@ import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
-from sqlalchemy.sql.sqltypes import TIMESTAMP, BOOLEAN
+from sqlalchemy.sql.sqltypes import TIMESTAMP, BOOLEAN, ARRAY
 
 from backend_service.core.data.database import Base
-
-
-class Post(Base):
-    __tablename__ = "posts"
-    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    title = Column(String, nullable=False)
-    content = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
-    user_id = Column(Integer, ForeignKey(
-        "users.id", ondelete="CASCADE"), nullable=False)
-
-    owner = relationship("User")
 
 
 class User(Base):
@@ -94,6 +81,19 @@ class Destination(Base):
     active = Column(BOOLEAN, nullable=False, server_default='t', default=True)
 
 
+class DestinationSurfDetails(Base):
+    __tablename__ = "destination_surf_details"
+    destination_id = Column(Integer, ForeignKey(
+        "destination.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    description = Column(String(500), nullable=False)
+    beginner_months = Column(ARRAY(Integer), nullable=False)
+    intermediate_months = Column(ARRAY(Integer), nullable=False)
+    expert_months = Column(ARRAY(Integer), nullable=False)
+    swell_colour = Column(ARRAY(String), nullable=False)
+    water_temp = Column(ARRAY(String), nullable=False)
+    weather = Column(ARRAY(String), nullable=False)
+
+
 class Beach(Base):
     __tablename__ = "beach"
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -111,3 +111,16 @@ class Beach(Base):
                         default=datetime.datetime.utcnow())
     date_updated = Column(TIMESTAMP(timezone=True), nullable=True)
     active = Column(BOOLEAN, nullable=False, server_default='t', default=True)
+
+
+class Post(Base):
+    __tablename__ = "post"
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    user_id = Column(Integer, ForeignKey(
+        "users.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    title = Column(String(200), nullable=False)
+    post_text = Column(String(500), nullable=False)
+    image_url = Column(String(200), nullable=True)
+    date_added = Column(TIMESTAMP(timezone=True), nullable=False, server_default='now()',
+                        default=datetime.datetime.utcnow())
+    date_updated = Column(TIMESTAMP(timezone=True), nullable=True)

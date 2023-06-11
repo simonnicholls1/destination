@@ -4,6 +4,30 @@ import Footer from '../components/common/Footer';
 import BlogCard from '../components/blog/BlogCards'
 import FeaturedBlogCard from '../components/blog/FeaturedBlogCard'
 
+const blogStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center', // Center the div
+  paddingTop: '100px',
+  paddingBottom: '50px',
+  paddingLeft: '30px', // Minimum left padding
+  paddingRight: '10px', // Minimum right padding
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  width: '1200px',
+  maxWidth: '100%',
+};
+
+const contentStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start', // Align content to the left
+  width: '100%',
+  maxWidth: '1200px', // Max width for the content
+};
+
+
 const Blog = () => {
     const [posts, setPosts] = useState([]);
     const [featuredPosts, setFeaturedPosts] = useState([]);
@@ -12,7 +36,7 @@ const Blog = () => {
     useEffect(() => {
     const fetchAllPosts = async () => {
         try {
-          const response = await fetch('destinationapi/posts/');
+          const response = await fetch('http://0.0.0.0:8000/destinationapi/posts/');
           if(!response.ok) {
               //throw new Error(response.statusText);
           }
@@ -25,7 +49,7 @@ const Blog = () => {
 
       const fetchFeaturedPosts = async () => {
         try {
-          const response = await fetch('destinationapi/posts?featured=4');
+          const response = await fetch('http://0.0.0.0:8000/destinationapi/posts/featured?no_results=5');
           if(!response.ok) {
               //throw new Error(response.statusText);
           }
@@ -51,9 +75,9 @@ const Blog = () => {
   return (
       <>
         <Navbar />
-        <div>
-          <h1>My Blog</h1>
-          <h2>Featured Blogs</h2>
+        <div style={blogStyle}>
+        <div style={contentStyle}>
+          <h2 >Featured Blogs</h2>
           {featuredPosts.map((post, index) => (
             <FeaturedBlogCard key={index} blog={post} />
           ))}
@@ -61,6 +85,7 @@ const Blog = () => {
           {posts.map((post, index) => (
             <BlogCard key={index} blog={post} />
           ))}
+          </div>
         </div>
         <Footer />
       < />

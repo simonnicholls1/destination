@@ -12,8 +12,13 @@ router=APIRouter(
 )
 
 @router.get('/', response_model=List[schemas.PostOut])
-def get_lists(db:Session=Depends(get_db), current_user: int =Depends(oauth2.get_current_user)):
-    ps=db.query(models.Post).all()
+def get_posts(db:Session=Depends(get_db)):
+    ps=db.query(models.Post).order_by(models.Post.date_added).limit(30).all()
+    return ps
+
+@router.get('/featured', response_model=List[schemas.PostOut])
+def get_featured_posts(no_results, db: Session = Depends(get_db)):
+    ps=db.query(models.Post).limit(no_results).all()
     return  ps
     
 @router.post("/")
