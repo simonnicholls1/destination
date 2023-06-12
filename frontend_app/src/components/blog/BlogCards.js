@@ -51,15 +51,15 @@ const StyledCard = styled.div`
 
 
 const BlogCard = ({ blog }) => {
-  const { title, image, text, date } = blog;
+  const { title, image_url, post_text, date } = blog;
 
   return (
     <StyledCard>
-      <img src={image} alt={title} className="img" />
+      <img src={image_url} alt={title} className="img" />
       <div className="text">
         <h3>{title}</h3>
         <p className="date">{date}</p>
-        <p>{text}</p>
+        <p>{post_text}</p>
         <a href="#" className="read-more">Read More</a>
       </div>
     </StyledCard>

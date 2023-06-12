@@ -23,9 +23,9 @@ def get_destination_details_by_id(id: int, db: Session = Depends(get_db)):
 
 @router.get("/featured")
 def get_featured_destination(no_results: int, db: Session = Depends(get_db)):
-    # create a joined query
+    # create a inner joined query
     joined_query = db.query(models.Destination, models.DestinationSurfDetails). \
-        outerjoin(models.DestinationSurfDetails, models.Destination.id == models.DestinationSurfDetails.destination_id)
+        join(models.DestinationSurfDetails, models.Destination.id == models.DestinationSurfDetails.destination_id)
 
     # execute the query and fetch all results
     destination = joined_query.limit(no_results).all()

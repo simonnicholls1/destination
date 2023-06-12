@@ -4,7 +4,7 @@ import water_temp_man from '../../assets/img/water-temp-man.png'
 import weather_sun from '../../assets/img/weather-sun.png'
 import weather_cloud from '../../assets/img/weather-cloud.png'
 
-const DestinationCard = ({ id, country, description, image, onClick, seasons }) => {
+const DestinationCard = ({ id, country, surfdetails, onClick }) => {
   const cardStyles = {
     width: '400px',
     height: '420px',
@@ -94,7 +94,7 @@ const monthStyles = {
 
 const seasonBarStyles = (monthIndex) => ({
 height: '10px',
-backgroundColor: seasons.some((season) => season.months.includes(monthIndex)) ? 'green' : 'transparent',
+backgroundColor: skillLevels.some((level) => level.months.includes(monthIndex)) ? 'green' : 'transparent',
 borderRadius: '5px',
 flexGrow: 1,
 paddingTop: '5px'
@@ -114,10 +114,21 @@ const borderStyles = {
   marginTop: 'px'
 };
 
+  const month_nos = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const skillLevels = [
+    { name: 'Beg', months: surfdetails.beginner_months },
+    { name: 'Int', months: surfdetails.intermediate_months },
+    { name: 'Adv', months: surfdetails.expert_months },
+    { name: 'Swell', months: surfdetails.swell_colour },
+    { name: 'Water Temp', months: surfdetails.water_temp },
+    { name: 'Weather', months: surfdetails.weather }
+  ];
+
 return (
   <div style={cardStyles}>
     <div style={titleStyles}>{country}</div>
-    <div style={descriptionStyles}>{description}</div>
+    <div style={descriptionStyles}>{surfdetails.description}</div>
     <div style={monthGridStyles}>
       <span style={{ minWidth: '80px' }}></span>
       {months.map((month, index) => (
@@ -126,10 +137,10 @@ return (
         </span>
       ))}
     </div>
-    {seasons.map((season, index) => (
+    {skillLevels.map((level, index) => (
       <div key={index} style={seasonRowStyles}>
-        <div style={seasonLabelStyles}>{season.name}</div>
-         {season.name === 'Beg' || season.name === 'Int' || season.name === 'Adv' ? (
+        <div style={seasonLabelStyles}>{level.name}</div>
+         {level.name === 'Beg' || level.name === 'Int' || level.name === 'Adv' ? (
           <div style={{ display: 'flex', width: 'calc(100% - 50px)' }}>
             {months.map((month, monthIndex) => (
               <div
@@ -142,7 +153,7 @@ return (
                   paddingRight: '1px',
                 }}
               >
-                {season.months.includes(monthIndex) ? (
+                {level.months.includes(monthIndex) ? (
                   <div style={seasonBarStyles(monthIndex)} />
                 ) : (
                   <div />
@@ -150,10 +161,10 @@ return (
               </div>
             ))}
           </div>
-        ) : season.name === 'Swell' ? (
+        ) : level.name === 'Swell' ? (
           <div style={{ display: 'flex', width: 'calc(100% - 50px)', ...borderStyles }}>
            <div style={borderStyles}> </div>
-            {season.months.map((color, monthIndex) => (
+            {level.months.map((color, monthIndex) => (
               <div
                 key={monthIndex}
                 style={{
@@ -168,9 +179,9 @@ return (
               </div>
             ))}
           </div>
-        ) : season.name === 'Water Temp' ? (
+        ) : level.name === 'Water Temp' ? (
           <div style={{ display: 'flex', width: 'calc(100% - 50px)', ...borderStyles }}>
-            {season.months.map((temp, monthIndex) => (
+            {level.months.map((temp, monthIndex) => (
               <div
                 key={monthIndex}
                 style={{
@@ -192,9 +203,9 @@ return (
             ))}
           </div>
         )
-        : season.name === 'Weather' ? (
+        : level.name === 'Weather' ? (
           <div style={{ display: 'flex', width: 'calc(100% - 50px)', ...borderStyles }}>
-            {season.months.map((temp, monthIndex) => (
+            {level.months.map((temp, monthIndex) => (
               <div
                 key={monthIndex}
                 style={{
@@ -241,11 +252,9 @@ const DestinationCardList = ({ destinations, onClick }) => {
       {destinations.map((destination, index) => (
         <DestinationCard
           key={index}
-          id={destination.id}
-          country={destination.country}
-          description={destination.description}
-          image={destination.image}
-          seasons={destination.seasons}
+          id={destination.Destination.id}
+          country={destination.Destination.name}
+          surfdetails={destination.DestinationSurfDetails}
           onClick={() => onClick(destination)}
         />
       ))}
