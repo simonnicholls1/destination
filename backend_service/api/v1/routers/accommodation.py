@@ -45,7 +45,7 @@ def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     return hotel
 
 @router.get("/hoteldetails")
-async def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
+async def hotel_details_by_id(hotel_id, db: Session = Depends(get_db)):
     hotel_search = HotelSearch(db)
     photo_service = HotelPhotos()
     facilities_service = HotelFacilities()

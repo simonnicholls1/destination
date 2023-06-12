@@ -7,8 +7,10 @@ const HotelFilter = ({ hotels, handleFilter }) => {
     yoga: false,
     closeToSurf: false,
     coWorkingSpace: false,
+    breakfastIncluded: false,
+    co2Compensated: false,
+    surfBreakAccess: false,
     budget: 1000,
-    surfBreakAccess: false
   });
 
   const handleSubmit = (e) => {
@@ -47,6 +49,14 @@ const HotelFilter = ({ hotels, handleFilter }) => {
 
   if (filters.coWorkingSpace) {
     filteredHotels = filteredHotels.filter(hotel => hotel.coWorkingSpace);
+  }
+
+  if (filters.co2Compensated) {
+    filteredHotels = filteredHotels.filter(hotel => hotel.co2Compensated);
+  }
+
+  if (filters.breakfastIncluded) {
+    filteredHotels = filteredHotels.filter(hotel => hotel.breakfastIncluded);
   }
 
   if (filters.budget > 0) {
@@ -112,7 +122,8 @@ const separatorStyles = {
         onChange={handleFilterChange} />
       Yoga
     </label>
-    </div><div className="filter-row">
+    </div>
+    <div className="filter-row">
       <label>
         <input
           type="checkbox"
@@ -121,7 +132,18 @@ const separatorStyles = {
           onChange={handleFilterChange} />
         Less than 1km to Surf
       </label>
-    </div><div className="filter-row">
+     </div>
+     <div className="filter-row">
+      <label>
+        <input
+          type="checkbox"
+          name="brekfastIncluded"
+          checked={filters.breakfastIncluded}
+          onChange={handleFilterChange} />
+        Co-Working Space
+      </label>
+    </div>
+    <div className="filter-row">
       <label>
         <input
           type="checkbox"
@@ -129,6 +151,16 @@ const separatorStyles = {
           checked={filters.coWorkingSpace}
           onChange={handleFilterChange} />
         Co-Working Space
+      </label>
+    </div>
+    <div className="filter-row">
+      <label>
+        <input
+          type="checkbox"
+          name="co2Compensated"
+          checked={filters.co2Compensated}
+          onChange={handleFilterChange} />
+        Co2-Compensated
       </label>
     </div>
     </div>

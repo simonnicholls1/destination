@@ -25,7 +25,13 @@ class HotelSearch:
 
     def get_accommodation_by_id(self, accommodation_id):
         print('Getting hotel')
-        query = f'select * from accommodation a join accommodation_id_mapping aim on aim.accommodation_id = a.id where a.id = {accommodation_id}'
+        query = f'select * ' \
+                f'from accommodation a ' \
+                f'join accommodation_id_mapping aim ' \
+                f'on aim.accommodation_id = a.id ' \
+                f'left outer join accommodation_surf_filters asd ' \
+                f'on asd.accommodation_id = a.id ' \
+                f'where a.id = {accommodation_id}'
         query_results = self.db.execute(query)
         accommodation_results = query_results.fetchone()
         return accommodation_results

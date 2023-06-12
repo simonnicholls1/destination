@@ -25,7 +25,7 @@ function HotelResults() {
 
   const handleSearch = (location_value, arrival, departure, guests) => {
     // send a request to the server to get the search results based on the search criteria
-    fetch(`localhost:8000/destinationapi/accommodation/searchlocation?place=${location_value}&arrival_date=${arrival}&departure_date=${departure}&guests=${guests}`, {
+    fetch(`http://0.0.0.0:8000/destinationapi/accommodation/searchlocation?place=${location_value}&arrival_date=${arrival}&departure_date=${departure}&guests=${guests}`, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     //body: JSON.stringify(searchCriteria),

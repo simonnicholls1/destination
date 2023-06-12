@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.get("/details/{id}")
 def get_destination_details_by_id(id: int, db: Session = Depends(get_db)):
-    destination = db.query(models.DestinationSurfDetails).filter(
+    destination = db.query(models.DestinationSurfDetails). filter(
         models.DestinationSurfDetails.destination_id == id).first()
     if destination is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

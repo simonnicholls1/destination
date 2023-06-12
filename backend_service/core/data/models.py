@@ -63,6 +63,19 @@ class AccommodationIdMapping(Base):
         "accommodation_type.type_id", ondelete="CASCADE"), primary_key=True, nullable=False)
 
 
+class AccommodationSurfFilters(Base):
+    __tablename__ = "accommodation_surf_filters"
+    accommodation_id = Column(Integer, ForeignKey(
+        "accommodation.id", ondelete="CASCADE"), primary_key=True, nullable=False)
+    surf_lessons = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    surf_rental = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    yoga = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    less_1km_surf = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    co_working = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    co2Compensated = Column(BOOLEAN, nullable=False, server_default='f', default=False)
+    surfBreakAccess = Column(String(30), nullable=False)
+
+
 class AccomodationType(Base):
     __tablename__ = "accommodation_type"
     type_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
