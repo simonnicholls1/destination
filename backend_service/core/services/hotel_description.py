@@ -1,5 +1,6 @@
 import requests
 from backend_service.core.services.hotel_availability import HotelAvailability
+import httpx
 
 
 class HotelDescription:
@@ -16,7 +17,7 @@ class HotelDescription:
         hotels_photo_urls = self.fetch_description(hotel_id)
         return hotels_photo_urls
 
-    async def fetch_description(self, hotel_id: int):
+    async def fetch_description_old(self, hotel_id: int):
         description = {}
 
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
@@ -36,5 +37,28 @@ class HotelDescription:
         except Exception as error:
             print("Error fetching description:", error)
 
+
+        return description
+
+    async def fetch_description(self, hotel_id: int):
+        description = {}
+
+        querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(self.url, params=querystring, headers=self.headers)
+                description_json = response.json()
+
+                for desc in description_json:
+                    if desc['descriptiontype_id'] == 6:
+                        description['main'] = desc['description']
+                    elif desc['descriptiontype_id'] == 7:
+                        description['house_rules'] = desc['description']
+                    else:
+                        description['other'] = desc['description']
+
+        except Exception as error:
+            print("Error fetching description:", error)
 
         return description

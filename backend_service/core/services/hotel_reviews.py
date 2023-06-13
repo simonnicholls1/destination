@@ -1,6 +1,7 @@
 from typing import Any, List, Dict
 
 import requests
+import httpx
 from backend_service.core.services.hotel_availability import HotelAvailability
 
 
@@ -18,7 +19,7 @@ class HotelReviews:
         reviews = self.fetch_reviews(hotel_id)
         return reviews
 
-    async def fetch_reviews(self, hotel_id: int):
+    async def fetch_reviews_old(self, hotel_id: int):
         reviews = []
 
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
@@ -32,6 +33,27 @@ class HotelReviews:
 
             reviews['avg_score'] = avg_score
             reviews['total_count'] = total_count
+
+        except Exception as error:
+            print("Error fetching reviews:", error)
+
+        return reviews
+
+    async def fetch_reviews(self, hotel_id: int):
+        reviews = []
+
+        querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(self.url, params=querystring, headers=self.headers)
+                reviews = response.json()
+                if type(reviews) == list:
+                    reviews = reviews[0]
+                total_count, avg_score = self._calc_total_avg_score(reviews['score_breakdown'])
+
+                reviews['avg_score'] = avg_score
+                reviews['total_count'] = total_count
 
         except Exception as error:
             print("Error fetching reviews:", error)

@@ -1,4 +1,5 @@
 import requests
+import httpx
 from backend_service.core.services.hotel_availability import HotelAvailability
 
 
@@ -11,18 +12,31 @@ class HotelFacilities:
             'X-RapidAPI-Host': 'apidojo-booking-v1.p.rapidapi.com',
         }
 
-
     def get_accommodation_facilities(self, hotel_id: int):
         print('Getting hotel photos')
         hotels_photo_urls = self.fetch_facilities(hotel_id)
         return hotels_photo_urls
 
-    async def fetch_facilities(self, hotel_id: int):
+    async def fetch_facilities_old(self, hotel_id: int):
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
 
         try:
             response = requests.get(self.url, headers=self.headers, params=querystring)
             facilities_data = response.json()
+
+        except Exception as error:
+            print("Error fetching photos:", error)
+
+        return facilities_data
+
+    async def fetch_facilities(self, hotel_id: int):
+        querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
+        facilities_data = None
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(self.url, headers=self.headers, params=querystring)
+                facilities_data = response.json()
 
         except Exception as error:
             print("Error fetching photos:", error)

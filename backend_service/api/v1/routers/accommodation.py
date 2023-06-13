@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from backend_service.core.data.database import get_db
@@ -58,12 +60,14 @@ async def hotel_details_by_id(hotel_id, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
 
     external_id = hotel["external_id"]
-    photos = await photo_service.fetch_photos(external_id)
-    facilities = await facilities_service.fetch_facilities(external_id)
-    reviews = await review_service.fetch_reviews(external_id)
-    description = await description_service.fetch_description(external_id)
+    photos = photo_service.fetch_photos(external_id)
+    facilities = facilities_service.fetch_facilities(external_id)
+    reviews = review_service.fetch_reviews(external_id)
+    description = description_service.fetch_description(external_id)
 
-    return {"hotel": hotel, "description": description, "photos": photos, "facilities": facilities, "reviews": reviews}
+    gathered_data = await asyncio.gather(photos, facilities, reviews, description)
+
+    return {"hotel": hotel, "description": gathered_data[3], "photos": gathered_data[0], "facilities": gathered_data[1], "reviews": gathered_data[2]}
 
 @router.get("/hotelphotos")
 async def hotel_photos(hotel_id):

@@ -1,4 +1,5 @@
 import requests
+import httpx
 
 
 class HotelPhotos:
@@ -14,7 +15,7 @@ class HotelPhotos:
         hotels_photo_urls = self.fetch_photos(hotel_id)
         return hotels_photo_urls
 
-    async def fetch_photos(self, hotel_id: int):
+    async def fetch_photos_old(self, hotel_id: int):
 
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
 
@@ -33,6 +34,29 @@ class HotelPhotos:
             prop_photos = [{'url': item['url'], 'tags': item['tags']} for item in photos if 'Property' in item['tags']]
 
             return {"all_photos": photos, "property_photos": prop_photos}
+
+        except Exception as error:
+            print("Error fetching photos:", error)
+            return {}
+
+    async def fetch_photos(self, hotel_id: int):
+        querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(self.url, params=querystring, headers=self.headers)
+                photo_data = response.json()
+                prefix_url = photo_data['url_prefix']
+
+                photos = []
+                for item in photo_data['data'][str(hotel_id)]:
+                    tags = [tag_obj['tag'] for tag_obj in item[3]]
+                    url = prefix_url + item[4]
+                    photos.append({'url': url, 'tags': tags})
+
+                prop_photos = [{'url': item['url'], 'tags': item['tags']} for item in photos if
+                               'Property' in item['tags']]
+
+                return {"all_photos": photos, "property_photos": prop_photos}
 
         except Exception as error:
             print("Error fetching photos:", error)

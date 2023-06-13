@@ -44,3 +44,4 @@ uvloop==0.16.0
 watchgod==0.7
 websockets==10.1
 geopy==2.3.0
+httpx==0.24.1

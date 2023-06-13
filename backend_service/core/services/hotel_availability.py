@@ -1,5 +1,7 @@
 import requests
 from dataclasses import dataclass
+import httpx
+import asyncio
 
 @dataclass
 class AccommodationBooking():
@@ -71,7 +73,7 @@ class HotelAvailability:
             hotel_ids.append(id)
         return hotels, hotel_ids
 
-    def _get_hotel_availability_by_offset(self, arrival_date, departure_date, latitude, longitude, guests, offset, search_id=None):
+    def _get_hotel_availability_by_offset_old(self, arrival_date, departure_date, latitude, longitude, guests, offset, search_id=None):
         querystring = self.gen_query(arrival_date, departure_date, latitude, longitude, guests, offset, search_id)
         response = requests.request("GET", self.url, headers=self.headers, params=querystring)
         result = response.json()
@@ -80,7 +82,18 @@ class HotelAvailability:
         count = result['count']
         return hotels, hotel_ids, count, search_id
 
-    def get_hotel_availability(self, arrival_date, departure_date, latitude, longitude, guests):
+    async def _get_hotel_availability_by_offset(self, arrival_date, departure_date, latitude, longitude, guests, offset,
+                                                search_id=None):
+        querystring = self.gen_query(arrival_date, departure_date, latitude, longitude, guests, offset, search_id)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(self.url, headers=self.headers, params=querystring)
+        result = response.json()
+        search_id = result['search_id']
+        hotels, hotel_ids = self.parse_results(result['result'])
+        count = result['count']
+        return hotels, hotel_ids, count, search_id
+
+    def get_hotel_availability_old(self, arrival_date, departure_date, latitude, longitude, guests):
         # Get first page of results, need count of hotels
         hotels = []
         hotel_ids = []
@@ -100,14 +113,46 @@ class HotelAvailability:
             hotel_ids.extend(hotel_ids_result)
         return hotels, hotel_ids
 
+    async def get_hotel_availability(self, arrival_date, departure_date, latitude, longitude, guests):
+        # Get first page of results, need count of hotels
+        hotels = []
+        hotel_ids = []
+        # Funky first call - radius changes from 70 to 15 so call it get the key and drop it
+        first_results, hotel_ids_result, hotel_count, search_id = await self._get_hotel_availability_by_offset(
+            arrival_date, departure_date, latitude, longitude, guests, 0)
+        first_results, hotel_ids_result, hotel_count, search_id = await self._get_hotel_availability_by_offset(
+            arrival_date, departure_date, latitude, longitude, guests, 0, search_id)
+
+        print('Number of hotels found: {0}'.format(hotel_count))
+        hotels.extend(first_results)
+        hotel_ids.extend(hotel_ids_result)
+
+        no_pages = int(hotel_count / 20) + 1
+
+        # Gather tasks to fetch pages concurrently
+        tasks = []
+        for i in range(1, no_pages):
+            task = self._get_hotel_availability_by_offset(arrival_date, departure_date, latitude, longitude, guests,
+                                                          i * 20, search_id)
+            tasks.append(task)
+
+        results = await asyncio.gather(*tasks)
+
+        for result in results:
+            hotels_page, hotel_ids_page, _, _ = result
+            hotels.extend(hotels_page)
+            hotel_ids.extend(hotel_ids_page)
+
+        return hotels, hotel_ids
+
 
 if __name__ == '__main__':
     hotel_avail_servc = HotelAvailability()
     lat = '10.3018594'
     long = '-85.8411169'
-    arrival_date = '2023-01-15'
-    departure_date = '2023-01-16'
+    arrival_date = '2023-07-15'
+    departure_date = '2023-07-16'
     guests = 2
-    hotels, hotel_ids = hotel_avail_servc.get_hotel_availability(arrival_date, departure_date, lat, long, guests)
+    hotels, hotel_ids = asyncio.run(hotel_avail_servc.get_hotel_availability(arrival_date, departure_date, lat, long, guests))
     print(hotels)
     print(hotel_ids)
