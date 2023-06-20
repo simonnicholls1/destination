@@ -114,7 +114,9 @@ const linkHoverStyles = {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`/hotels?location=${location}&checkin=${checkin}&checkout=${checkout}&guests=${guests}`);
+    const formattedCheckin = checkin.toISOString().split('T')[0];
+    const formattedCheckout = checkout.toISOString().split('T')[0];
+    navigate(`/hotels?location=${location}&checkin=${formattedCheckin}&checkout=${formattedCheckout}&guests=${guests}`);
   };
 
 const CustomInput = React.forwardRef(({ value, onClick, placeholder }, ref) => (
@@ -144,12 +146,14 @@ const [blogHover, setBlogHover] = useState(false);
           onChange={(date) => setCheckin(date)}
           customInput={<CustomInput />}
           placeholderText="Check-In"
+          dateFormat="yyyy-MM-dd"
         />
         <DatePicker
           selected={checkout}
           onChange={(date) => setCheckout(date)}
           customInput={<CustomInput />}
           placeholderText="Check-Out"
+          dateFormat="yyyy-MM-dd"
         />
         <input style={formInputOuterRightStyles} type='text' placeholder='Surfers' value={guests} onChange={(event) => setGuests(event.target.value)} />
         <a href="#" onClick={handleSubmit}><img src={search} alt='search' style={searchStyles} /></a>

@@ -42,7 +42,7 @@ class HotelPhotos:
     async def fetch_photos(self, hotel_id: int):
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=30.0) as client:
                 response = await client.get(self.url, params=querystring, headers=self.headers)
                 photo_data = response.json()
                 prefix_url = photo_data['url_prefix']

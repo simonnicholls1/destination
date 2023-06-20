@@ -34,7 +34,7 @@ class HotelFacilities:
         facilities_data = None
 
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(self.url, headers=self.headers, params=querystring)
                 facilities_data = response.json()
 

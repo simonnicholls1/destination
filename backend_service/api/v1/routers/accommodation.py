@@ -18,19 +18,19 @@ router = APIRouter(
 
 
 @router.get("/searchlocation")
-def search_hotel(arrival_date, departure_date, place, guests, db: Session = Depends(get_db)):
+async def search_hotel(arrival_date, departure_date, place, guests, db: Session = Depends(get_db)):
     hotel_search = HotelSearch(db)
     #try get location from place name
     geo_locate = GeoLocation()
     latitude, longitude = geo_locate.geo_locate(place)
 
-    hotels = hotel_search.get_accommodation(arrival_date, departure_date, latitude, longitude, guests)
+    hotels = await hotel_search.get_accommodation(arrival_date, departure_date, latitude, longitude, guests)
     if hotels is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Accommodation not found")
     return hotels
 
 @router.get("/featured")
-def featured_hotes(no_results, db: Session = Depends(get_db)):
+async def featured_hotes(no_results, db: Session = Depends(get_db)):
     hotel_search = HotelSearch(db)
     hotels = hotel_search.get_featured_accommodation(no_results)
     if hotels is None:
@@ -38,7 +38,7 @@ def featured_hotes(no_results, db: Session = Depends(get_db)):
     return hotels
 
 @router.get("/hotel")
-def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
+async def hotel_by_id(hotel_id, db: Session = Depends(get_db)):
     hotel_search = HotelSearch(db)
     hotel_id = int(hotel_id)
     hotel = hotel_search.get_accommodation_by_id(hotel_id)
@@ -53,6 +53,7 @@ async def hotel_details_by_id(hotel_id, db: Session = Depends(get_db)):
     facilities_service = HotelFacilities()
     review_service = HotelReviews()
     description_service = HotelDescription()
+    room_service = HotelRooms()
 
     hotel_id = int(hotel_id)
     hotel = hotel_search.get_accommodation_by_id(hotel_id)
@@ -65,9 +66,12 @@ async def hotel_details_by_id(hotel_id, db: Session = Depends(get_db)):
     reviews = review_service.fetch_reviews(external_id)
     description = description_service.fetch_description(external_id)
 
-    gathered_data = await asyncio.gather(photos, facilities, reviews, description)
+    room_params = room_service.get_default_params()
+    rooms = room_service.fetch_rooms(external_id, room_params['start_date'], room_params['end_date'], room_params['number_of_guests'], room_params['room_number'])
 
-    return {"hotel": hotel, "description": gathered_data[3], "photos": gathered_data[0], "facilities": gathered_data[1], "reviews": gathered_data[2]}
+    gathered_data = await asyncio.gather(photos, facilities, reviews, description, rooms)
+
+    return {"hotel": hotel, "description": gathered_data[3], "photos": gathered_data[0], "facilities": gathered_data[1], "reviews": gathered_data[2], "rooms": gathered_data[4]}
 
 @router.get("/hotelphotos")
 async def hotel_photos(hotel_id):

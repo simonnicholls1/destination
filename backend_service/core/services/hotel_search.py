@@ -7,18 +7,18 @@ class HotelSearch:
         self.avail_service = HotelAvailability()
         self.db = database
 
-    def _get_accommodation_availability(self, arrival_date, departure_date, latitude, longitude, guests):
+    async def _get_accommodation_availability(self, arrival_date, departure_date, latitude, longitude, guests):
         print('Getting hotel availability')
-        hotels, hotel_ids = self.avail_service.get_hotel_availability(arrival_date, departure_date, latitude, longitude, guests)
+        hotels, hotel_ids = await self.avail_service.get_hotel_availability(arrival_date, departure_date, latitude, longitude, guests)
         return hotels, hotel_ids
 
     def _get_accommodation_by_ids(self, accomodation_ids):
         print('Getting our hotels')
         if len(accomodation_ids) == 1:
-            query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id = {0}'.format(
+            query = 'select external_id from accommodation a join accommodation_id_mapping i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id = {0}'.format(
                 accomodation_ids[0])
         else:
-            query = 'select external_id from accommodation a join accommodation_id i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
+            query = 'select external_id from accommodation a join accommodation_id_mapping i on a.id = i.accommodation_id and external_id_type = 1 WHERE external_id IN {id_list}'.format(id_list=tuple(accomodation_ids))
         query_results = self.db.execute(query)
         accomodation_results = [row[0] for row in query_results.fetchall()]
         return accomodation_results
@@ -36,8 +36,8 @@ class HotelSearch:
         accommodation_results = query_results.fetchone()
         return accommodation_results
 
-    def get_accommodation(self, arrival_date, departure_date, latitude, longitude, guests):
-        hotels, hotel_ids = self._get_accommodation_availability(arrival_date, departure_date, latitude, longitude, guests)
+    async def get_accommodation(self, arrival_date, departure_date, latitude, longitude, guests):
+        hotels, hotel_ids = await self._get_accommodation_availability(arrival_date, departure_date, latitude, longitude, guests)
         surf_ids = self._get_accommodation_by_ids(hotel_ids)
 
         #Pretty awful way of filtering but it will do for now

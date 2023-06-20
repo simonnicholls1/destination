@@ -46,7 +46,7 @@ class HotelDescription:
         querystring = {"hotel_ids": hotel_id, "languagecode": "en-us"}
 
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(self.url, params=querystring, headers=self.headers)
                 description_json = response.json()
 
