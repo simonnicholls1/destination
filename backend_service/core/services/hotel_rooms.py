@@ -27,7 +27,7 @@ class HotelRooms:
             room_data = response.json()
 
         except Exception as error:
-            print("Error fetching photos:", error)
+            print("Error fetching rooms:", error)
 
         return room_data
 
@@ -42,10 +42,50 @@ class HotelRooms:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(self.url, params=querystring, headers=self.headers)
             room_data = response.json()
-            rooms = room_data[0]['rooms']
+            rooms = self.parse_rooms(room_data)
 
         except Exception as error:
             print("Error fetching rooms:", error)
+
+        return rooms
+
+    def parse_rooms(self, room_response_json):
+        data = room_response_json[0]
+        room_data = data["rooms"]
+        rooms = {}
+
+        for block_data in data["block"]:
+            room_id = block_data["room_id"]
+            current_room_data = room_data.get(str(room_id))
+
+            if room_id not in rooms:
+                rooms[room_id] = {}
+                rooms[room_id]["blocks"] = []
+
+            current_room = rooms[room_id]
+
+            current_room["photos"] = [photo["url_original"] for photo in current_room_data["photos"]]
+            current_room["facilities"] = [facility["name"] for facility in current_room_data["facilities"]]
+
+            block = {}
+            block["room_id"] = block_data.get("room_id")
+            block["name"] = block_data.get("name")
+            block["name_without_pol"] = block_data.get("name_without_policy")
+            block["refundable_until"] = block_data.get("refundable_until")
+            block["refundable"] = block_data.get("refundable")
+            block["all_inclusive"] = block_data.get("all_inclusive")
+            block["full_board"] = block_data.get("full_board")
+            block["half_board"] = block_data.get("half_board")
+            block["nr_adults"] = block_data.get("nr_adults")
+            block["nr_children"] = block_data.get("nr_children")
+            block["room_count"] = block_data.get("room_count")
+            block["number_of_bathrooms"] = block_data.get("number_of_bathrooms")
+            block["gross_ammount"] = block_data["product_price_breakdown"].get("gross_ammount")
+            block["gross_ammount_per_night"] = block_data["product_price_breakdown"].get("gross_ammount_per_night")
+            block["room_count"] = block_data.get("room_count")
+            block["room_count"] = block_data.get("room_count")
+
+            current_room["blocks"].append(block)
 
         return rooms
 
