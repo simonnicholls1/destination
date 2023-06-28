@@ -8,6 +8,7 @@ import CardList from '../components/hotel/HotelCards'
 import HotelFilter from '../components/hotel/HotelFilter';
 import HotelMapMulti from '../components/hotel/HotelMapMulti';
 
+
 function HotelResults() {
   
   const location = useLocation();

@@ -51,6 +51,8 @@ class HotelRooms:
 
     def parse_rooms(self, room_response_json):
         data = room_response_json[0]
+        if 'rooms' not in data:
+            return []
         room_data = data["rooms"]
         rooms = {}
 

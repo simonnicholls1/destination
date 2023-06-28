@@ -8,6 +8,7 @@ import Footer from '../components/common/Footer';
 import Button from '../components/common/Button'
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
+import RoomCardList from '../components/hotel/RoomCard';
 
 
 
@@ -40,6 +41,7 @@ const HotelDetail = () => {
   const [description, setDescription] = useState(null);
   const [facilities, setFacilities] = useState(null);
   const [propertyPhotos, setPropertyPhotos] = useState(null);
+  const [rooms, setRooms] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [showAllFacilities, setShowAllFacilities] = useState(false);
 
@@ -60,6 +62,7 @@ useEffect(() => {
       setReviews(hotelData["reviews"]);
       setDescription(hotelData["description"])
       setFacilities(hotelData["facilities"]);
+      setRooms(hotelData["rooms"]);
     } catch (error) {
       console.error("Error fetching hotel data:", error);
     }
@@ -240,16 +243,7 @@ const facilitiesStyle = {
       <Button text="Show All" onClick={() => setShowAllFacilities(true)} />
 
      <HeadingWithBorder>Available Rooms</HeadingWithBorder>
-
-    {/*
-      <h2>Available Rooms</h2>
-      <div style={hotelRooms}>
-        {hotel.rooms.map((room, idx) => (
-          <HotelRoomCard key={idx} room={room} />
-        ))}
-      </div>
-     */}
-
+     <RoomCardList rooms={rooms} />
      <HeadingWithBorder>Reviews</HeadingWithBorder>
      <div id="reviews"></div>
      {/* Reviews section content */}
