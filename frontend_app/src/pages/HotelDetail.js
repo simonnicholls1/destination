@@ -9,7 +9,7 @@ import Button from '../components/common/Button'
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import RoomCardList from '../components/hotel/RoomCard';
-
+import SurferFacilities from '../components/hotel/SurferFacilities';
 
 
 const HeadingWithBorder = ({ children }) => {
@@ -197,7 +197,7 @@ const facilitiesStyle = {
      <div style={contentStyle}>
       <h1 style={{ fontWeight: '350' }}>{hotel.name}</h1>
       <div style={inlineInfoStyle}>
-            <span>⭐ {reviews.avg_score.toFixed(2)} - </span>
+            <span>⭐ {reviews.avg_score && reviews.avg_score.toFixed(2)} - </span>
             <a href="#reviews" style={{
                 textDecoration: isHovered ? 'underline' : 'none',
                 color: 'inherit'
@@ -228,11 +228,7 @@ const facilitiesStyle = {
       <p>{description.main}</p>
 
       <HeadingWithBorder>For surfers</HeadingWithBorder>
-      <ul style={facilitiesStyle}>
-        {facilities && facilities.slice(0, 12).map((facility, idx) => (
-          <li key={idx}>{facility.facility_name}</li>
-        ))}
-      </ul>
+      <SurferFacilities hotel={hotel} />
 
       <HeadingWithBorder>Hotel Facilities</HeadingWithBorder>
       <ul style={facilitiesStyle}>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RoomCard = (roomData) => {
+const RoomCard = ({roomData}) => {
     const { blocks, photos, facilities } = roomData;
 
     return (
@@ -12,7 +12,7 @@ const RoomCard = (roomData) => {
                     <p>Price: {block.gross_ammount ? `$${block.gross_ammount}` : 'Not Available'}</p>
                     <a href={`https://hotelbooking.com/book/${block.room_id}`}>Book Now</a>
                     <div >
-                        {photos.map((photo, photoIndex) => (
+                        {photos.slice(1, 2).map((photo, photoIndex) => (
                             <img key={photoIndex} src={photo} alt={`room ${index} photo ${photoIndex}`} />
                         ))}
                     </div>
@@ -28,11 +28,11 @@ const RoomCard = (roomData) => {
     );
 };
 
-const RoomCardList = (rooms) => {
+const RoomCardList = ({rooms}) => {
     return (
         <>
         <div>
-            {Object.keys(rooms).map((roomId) => (
+            {rooms && Object.keys(rooms).length > 0 && Object.keys(rooms).map((roomId) => (
                 <RoomCard key={roomId} roomData={rooms[roomId]} />
             ))}
         </div>
